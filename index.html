@@ -1,5 +1,30 @@
 <html>
+    <script src="script/jquery.js"></script>
+    <script src="script/toolbar.js"></script>
+    <link href="css/index.css" rel="stylesheet" type="text/css" />
+    <link href="css/base.css" rel="stylesheet" type="text/css" />
     <body>
-		<!-- Lingmar 2 -->
+      <div id="toolbar-container">
+      </div>  
+      <div id="content">
+        <div id="login-input-form" class="card-view">
+            <div class="input-form-line gravity-center">
+                <span class="view ">
+                    <img src="img/user.png">
+                </span>
+                <label class="view text-view">
+                    账 号:
+                  </label>
+                  <input class="view edit-text" type="text" placeholder="请输入用户名"/>
+            </div>
+        </div>
+      </div>
     </body>
+    <script>
+        $(function(){
+          toolbar = new Toolbar("#toolbar-container", function(toolbar){
+            toolbar.title.html("登录") ;
+          }) ;
+        });
+    </script>
 </html>
