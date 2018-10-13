@@ -1,0 +1,41 @@
+@import "../css/res/color.less" ;
+
+@toolbar-height:12rem ;
+
+html{
+    font-size: 62.5% ;
+}
+
+div{
+    display: -webkit-flex; /* Safari */
+    display: flex;
+}
+
+.app-toolbar-title{
+    font-size: 4rem ;
+    color: #ffffff ;
+    margin: auto ;
+    z-index: 0;
+    position: relative;
+    float: left;
+}
+
+.app-toolbar-left-icon{
+    font-size: 4rem ;
+    padding-left: 2rem;
+    color: #ffffff ;
+    z-index: 1;
+    position: absolute;
+    float: left;
+}
+
+.app-toolbar{
+    background-color: @toolbar-color ;
+    width: 100% ;
+    height: @toolbar-height;
+}
+
+.app-toolbar-center-vertical{
+    margin-top: @toolbar-height / 2 ;
+    transform: translate(0%, -50%) ;
+}
