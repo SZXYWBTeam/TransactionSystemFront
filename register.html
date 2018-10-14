@@ -1,0 +1,117 @@
+<html>
+
+<head>
+    <script src="script/jquery.js"></script>
+    <script src="script/toolbar.js"></script>
+    <link href="css/base.css" rel="stylesheet" type="text/css" />
+    <link href="css/register.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div id="toolbar-container">
+
+    </div>
+
+    <div id="content">
+        <div class="view-parent card-view gravity-vertical">
+
+            <div class="input-form-line gravity-center">
+                <span class="view ">
+                    <img src="img/user.png">
+                </span>
+                <label class="view text-view login-label" for="ed-useraccount">
+                    账&nbsp;号:
+                </label>
+                <input id="ed-useraccount" name="" class="view edit-text-view login-ed-text" type="text" placeholder="请输入账号" />
+            </div>
+
+
+            <div class="input-form-line gravity-center">
+                <span class="view ">
+                    <img src="img/user.png">
+                </span>
+                <label class="view text-view login-label" for="ed-password">
+                    密&nbsp;码:
+                </label>
+                <input id="ed-password" name="" class="view edit-text-view login-ed-text" type="text" placeholder="请输入密码" />
+            </div>
+
+            <div class="input-form-line gravity-center">
+                <span class="view ">
+                    <img src="img/user.png">
+                </span>
+                <label class="view text-view login-label" for="ed-userphone">
+                    手机号:
+                </label>
+                <input id="ed-userphone" name="" class="view edit-text-view login-ed-text" type="text" placeholder="请输入手机号" />
+            </div>
+
+            <div class="input-form-line gravity-center">
+                <span class="view ">
+                    <img src="img/user.png">
+                </span>
+                <label class="view text-view login-label" for="ed-username">
+                    姓&nbsp;名:
+                </label>
+                <input id="ed-username" name="" class="view edit-text-view login-ed-text" type="text" placeholder="请输入姓名" />
+            </div>
+
+            <div class="input-form-line gravity-center">
+                <span class="view ">
+                    <img src="img/alipay.png">
+                </span>
+                <label class="view text-view login-label" for="ed-alipay">
+                    支付宝:
+                </label>
+                <input id="ed-alipay" name="" class="view edit-text-view login-ed-text" type="text" placeholder="请输入支付宝" />
+            </div>
+
+            <div class="input-form-line gravity-center">
+                <span class="view ">
+                    <img src="img/user.png">
+                </span>
+                <label class="view text-view login-label" for="ed-invitecode">
+                    邀请码:
+                </label>
+                <input id="ed-invitecode" name="" class="view edit-text-view login-ed-text" type="text" placeholder="请输入邀请码" />
+            </div>
+
+            <div class="input-form-line gravity-center">
+                <span class="view ">
+                    <img src="img/user.png">
+                </span>
+                <label class="view text-view login-label" for="ed-verifycode" id="lb-verify-code">
+                    验证码:
+                </label>
+                <input id="ed-verifycode" name="" class="view edit-text-view login-ed-text" type="text" placeholder="请输入验证码" />
+                <span class="view" id="send-code-button">
+                    发送
+                </span>
+            </div>
+
+        </div>
+
+        <div class="view text-view button" id="register-button">
+            注册
+        </div>
+
+          <!-- 注册按钮 -->
+          <div class="view-parent flex gravity-center">
+                <span class="view text-view center-horizontal" id="register-protocol">
+                    注册即<a>同意注册协议</a>
+                </span>
+            </div>
+    </div>
+</body>
+<script>
+    $(function () {
+        toolbar = new Toolbar("#toolbar-container", function () {
+            toolbar.title.html("注册");
+            toolbar.backButton.click(function () {
+                window.location.href = "index.html";
+            });
+        });
+    });
+</script>
+
+</html>

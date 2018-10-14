@@ -1,21 +1,14 @@
+@import "../css/res/color.less" ;
 @shadow-color:#CCCCCC;
+@border-radius:1rem;
 
 html{
     font-size: 62.5% ;
 }
-.card-view{
-    border:1px solid #CCCCCC;
-    font-size: 4rem;
-    margin: 1rem;
-    padding: 1rem;
-    border-radius: 1rem;
-    -moz-box-shadow:2px 2px 2px @shadow-color; 
-    -webkit-box-shadow:2px 2px 2px @shadow-color; 
-    box-shadow:2px 2px 2px @shadow-color;
-}
 
 .input-form-line{
     display: flex ;
+    padding: 2rem;
 }
 .text-view{
     font-size: 4rem;
@@ -24,12 +17,80 @@ html{
 
 .edit-text-view{
     font-size: 4rem;
+    padding: 1rem;
     height: fit-content;
     border:1px solid #CCCCCC;
+    border-radius: @border-radius ;
+}
+.edit-text-view:focus{
+    border:1px solid #66ccff;
+    border-radius: @border-radius ;
+}
+
+.login-ed-text{
+    width: 100%;
+    outline:none;
+    border: none;
+}
+.login-label{
+    width: 25rem;
+    text-align: center ;
+    margin: 1rem;
+}
+.login-ed-text:focus{
+    outline:none;
+    border: none;
 }
 .gravity-center{
+    display: flex;
+    display: -webkit-flex;
     align-items:center;
+    justify-content: center;
+}
+.gravity-vertical{
+    display: block ;
 }
 .view{
     margin: 2rem;
+}
+.view-parent{
+    padding: 2rem ;
+    overflow: hidden;
+}
+.flex{
+    display: flex ;
+    display: -webkit-flex;
+}
+.card-view{
+    border:1px solid #CCCCCC;
+    font-size: 4rem;
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: @border-radius;
+    -moz-box-shadow:2px 2px 2px @shadow-color; 
+    -webkit-box-shadow:2px 2px 2px @shadow-color; 
+    box-shadow:2px 2px 2px @shadow-color;
+}
+.button{
+    background-color: @accent-color ;
+    text-align: center;
+    color: #ffffff;
+    padding: 2rem;
+    border-radius: @border-radius;
+    -moz-box-shadow:2px 2px 2px @shadow-color; 
+    -webkit-box-shadow:2px 2px 2px @shadow-color; 
+    box-shadow:2px 2px 2px @shadow-color;
+}
+
+
+.horizontal-line{
+    height: 1px;
+    width: 100%;
+    padding: 0px;
+    background-color: #CCCCCC ;
+    border-radius: @border-radius ;
+}
+
+.center-horizontal{
+    justify-self: center;
 }
