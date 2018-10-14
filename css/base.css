@@ -1,6 +1,59 @@
 html {
   font-size: 62.5% ;
 }
+.input-form-line {
+  display: flex ;
+  padding: 2rem;
+}
+.text-view {
+  font-size: 4rem;
+  height: fit-content;
+}
+.edit-text-view {
+  font-size: 4rem;
+  padding: 1rem;
+  height: fit-content;
+  border: 1px solid #CCCCCC;
+  border-radius: 1rem;
+}
+.edit-text-view:focus {
+  border: 1px solid #66ccff;
+  border-radius: 1rem;
+}
+.login-ed-text {
+  width: 100%;
+  outline: none;
+  border: none;
+}
+.login-label {
+  width: 25rem;
+  text-align: center ;
+  margin: 1rem;
+}
+.login-ed-text:focus {
+  outline: none;
+  border: none;
+}
+.gravity-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center;
+}
+.gravity-vertical {
+  display: block ;
+}
+.view {
+  margin: 2rem;
+}
+.view-parent {
+  padding: 2rem ;
+  overflow: hidden;
+}
+.flex {
+  display: flex ;
+  display: -webkit-flex;
+}
 .card-view {
   border: 1px solid #CCCCCC;
   font-size: 4rem;
@@ -11,21 +64,23 @@ html {
   -webkit-box-shadow: 2px 2px 2px #CCCCCC;
   box-shadow: 2px 2px 2px #CCCCCC;
 }
-.input-form-line {
-  display: flex ;
+.button {
+  background-color: #FF5242;
+  text-align: center;
+  color: #ffffff;
+  padding: 2rem;
+  border-radius: 1rem;
+  -moz-box-shadow: 2px 2px 2px #CCCCCC;
+  -webkit-box-shadow: 2px 2px 2px #CCCCCC;
+  box-shadow: 2px 2px 2px #CCCCCC;
 }
-.text-view {
-  font-size: 4rem;
-  height: fit-content;
+.horizontal-line {
+  height: 1px;
+  width: 100%;
+  padding: 0px;
+  background-color: #CCCCCC ;
+  border-radius: 1rem;
 }
-.edit-text-view {
-  font-size: 4rem;
-  height: fit-content;
-  border: 1px solid #CCCCCC;
-}
-.gravity-center {
-  align-items: center;
-}
-.view {
-  margin: 2rem;
+.center-horizontal {
+  justify-self: center;
 }

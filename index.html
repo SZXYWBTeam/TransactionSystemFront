@@ -1,8 +1,11 @@
 <html>
+
+<head>
     <script src="script/jquery.js"></script>
     <script src="script/toolbar.js"></script>
     <link href="css/index.css" rel="stylesheet" type="text/css" />
     <link href="css/base.css" rel="stylesheet" type="text/css" />
+<<<<<<< HEAD
     <body>
 <<<<<<< HEAD
     <!-- Lingmar 2 -->
@@ -12,16 +15,68 @@
       </div>  
       <div id="content">
         <div id="login-input-form" class="card-view">
+=======
+</head>
+
+<body>
+    <div id="toolbar-container">
+    </div>
+    <div id="content">
+        <div id="login-input-form" class="view-parent card-view gravity-vertical">
+
+            <!-- 用户名输入框 开始 -->
+>>>>>>> c6e243a7db6ecb631338b4f42ac4264026f4e07f
             <div class="input-form-line gravity-center">
                 <span class="view ">
                     <img src="img/user.png">
                 </span>
-                <label class="view text-view">
+                <label class="view text-view login-label" for="ed-username">
                     账 号:
-                  </label>
-                  <input class="view edit-text" type="text" placeholder="请输入用户名"/>
+                </label>
+                <input id="ed-username" class="view edit-text-view login-ed-text" type="text" placeholder="请输入用户名" />
             </div>
+            <!-- 用户名输入框 结束 -->
+
+            <!-- 水平分割线 -->
+            <div class="input-form-line horizontal-line"></div>
+            <!-- 水平分割线 -->
+
+            <!-- 用户面输入框 开始 -->
+            <div class="input-form-line gravity-center">
+                <span class="view ">
+                    <img src="img/password.png">
+                </span>
+                <label class="view text-view login-label" for="ed-password">
+                    密 码:
+                </label>
+                <input id="ed-password" class="view edit-text-view login-ed-text" type="text" placeholder="请输入密码" />
+            </div>
+            <!-- 用户面输入框 结束 -->
+
+            <!-- 水平分割线 -->
+            <div class="input-form-line horizontal-line"></div>
+            <!-- 水平分割线 -->
+
+            <!-- 验证码输入框 开始 -->
+            <div class="input-form-line gravity-center">
+                <span class="view ">
+                    <img src="img/verifycode.png">
+                </span>
+                <label class="view text-view login-label" for="ed-ed-verifycode">
+                    验证码:
+                </label>
+                <input id="ed-verifycode" class="view edit-text-view login-ed-text" type="text" placeholder="请输入验证码" />
+            </div>
+            <!-- 验证码输入框 结束 -->
         </div>
+
+        <!-- 登录按钮 -->
+        <div class="gravity-center">
+            <span class="view text-view button" id="login-button">
+                登录
+            </span>
+        </div>
+<<<<<<< HEAD
       </div>
 >>>>>>> 63300ac7e46cc021670226c279cc91d1ce8600d8
     </body>
@@ -30,6 +85,30 @@
           toolbar = new Toolbar("#toolbar-container", function(toolbar){
             toolbar.title.html("登录") ;
           }) ;
+=======
+
+
+        <!-- 注册按钮 -->
+        <div id="register-container">
+            <span class="view text-view" id="register-button">
+                还未注册？<a>点击注册</a>
+            </span>
+        </div>
+
+    </div>
+</body>
+<script>
+    $(function () {
+        toolbar = new Toolbar("#toolbar-container", function () {
+            toolbar.title.html("登录");
+            toolbar.backButton.hide();
         });
-    </script>
+
+        $("#register-button").click(function () {
+            window.location.href = "register.html";
+>>>>>>> c6e243a7db6ecb631338b4f42ac4264026f4e07f
+        });
+    });
+</script>
+
 </html>
