@@ -7,6 +7,8 @@
 #lb-verify-code {
   width: 35rem;
 }
-#send-code-button {
-  width: 30rem;
+#verify-code-button {
+  width: 20rem;
+  height: 8rem;
+  margin: 0rem;
 }
