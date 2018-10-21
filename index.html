@@ -1,8 +1,11 @@
+<!DOCTYPE html>
 <html>
 
 <head>
     <script src="script/jquery.js"></script>
     <script src="script/toolbar.js"></script>
+    <script src="script/vue.js"></script>
+    <script src="script/data/vuedata.js"></script>
     <link href="css/index.css" rel="stylesheet" type="text/css" />
     <link href="css/base.css" rel="stylesheet" type="text/css" />
 </head>
@@ -21,7 +24,8 @@
                 <label class="view text-view login-label" for="ed-username">
                     账 号:
                 </label>
-                <input id="ed-username" class="view edit-text-view login-ed-text" type="text" placeholder="请输入用户名" />
+                <input id="ed-username" v-model="account" class="view edit-text-view login-ed-text" type="text"
+                    placeholder="请输入用户名" />
             </div>
             <!-- 用户名输入框 结束 -->
 
@@ -37,7 +41,7 @@
                 <label class="view text-view login-label" for="ed-password">
                     密 码:
                 </label>
-                <input id="ed-password" class="view edit-text-view login-ed-text" type="text" placeholder="请输入密码" />
+                <input id="ed-password" v-model="pwd" class="view edit-text-view login-ed-text" type="text" placeholder="请输入密码" />
             </div>
             <!-- 用户面输入框 结束 -->
 
@@ -53,14 +57,18 @@
                 <label class="view text-view login-label" for="ed-ed-verifycode">
                     验证码:
                 </label>
-                <input id="ed-verifycode" class="view edit-text-view login-ed-text" type="text" placeholder="请输入验证码" />
+                <input id="ed-verifycode" v-model="verifycode" class="view edit-text-view login-ed-text" type="text"
+                    placeholder="请输入验证码" />
+                <span class="view">
+                    <img id="send-code-button" class="vcode" :src="vcodeImg" @click="changeImg">
+                </span>
             </div>
             <!-- 验证码输入框 结束 -->
         </div>
 
         <!-- 登录按钮 -->
         <div class="gravity-center">
-            <span class="view text-view button" id="login-button">
+            <span class="view text-view button" id="login-button" @click="loginSubmit">
                 登录
             </span>
         </div>
@@ -85,6 +93,52 @@
             window.location.href = "register.html";
         });
     });
+
+    function getRandom(n) {
+        return Math.floor(Math.random() * n + 1)
+    }
+
+    var vue = new Vue({
+        el: "#content",
+        mounted() {
+            //alert("111");
+            this.changeImg()
+        },
+        data: {
+            account: '',
+            pwd: '',
+            verifycode: '',
+            vcodeImg: ''
+        },
+        methods: {
+            loginSubmit: function () {
+                var url = webServer.data.baseURL + webServer.data.login;
+                var parmas = {
+                    account: this.account,
+                    password: this.pwd,
+                    verCode: this.verifycode
+                };
+                //alert(JSON.stringify(parmas));
+/*
+                $.post(url, JSON.stringify(parmas), function (data) {
+                   console(data);
+                }, "json")
+                */
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: JSON.stringify(parmas),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (msg) {
+                        //alert(msg);
+                    }
+                })
+            },
+            changeImg: function () {
+                this.vcodeImg = webServer.data.baseURL + webServer.data.vCodeImg + "/" + getRandom(999)
+            }
+        }
+    })
 </script>
 
 </html>
