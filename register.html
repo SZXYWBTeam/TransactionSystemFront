@@ -3,6 +3,8 @@
 <head>
     <script src="script/jquery.js"></script>
     <script src="script/toolbar.js"></script>
+    <script src="script/vue.js"></script>
+    <script src="script/data/vuedata.js"></script>
     <link href="css/base.css" rel="stylesheet" type="text/css" />
     <link href="css/register.css" rel="stylesheet" type="text/css" />
 </head>
@@ -22,7 +24,8 @@
                 <label class="view text-view login-label" for="ed-useraccount">
                     账&nbsp;号:
                 </label>
-                <input id="ed-useraccount" name="" class="view edit-text-view login-ed-text" type="text" placeholder="请输入账号" />
+                <input id="ed-useraccount" v-model="account" name="" class="view edit-text-view login-ed-text" type="text"
+                    placeholder="请输入账号" />
             </div>
 
 
@@ -33,7 +36,8 @@
                 <label class="view text-view login-label" for="ed-password">
                     密&nbsp;码:
                 </label>
-                <input id="ed-password" name="" class="view edit-text-view login-ed-text" type="text" placeholder="请输入密码" />
+                <input id="ed-password" v-model="password" name="" class="view edit-text-view login-ed-text" type="text"
+                    placeholder="请输入密码" />
             </div>
 
             <div class="input-form-line gravity-center">
@@ -43,7 +47,8 @@
                 <label class="view text-view login-label" for="ed-userphone">
                     手机号:
                 </label>
-                <input id="ed-userphone" name="" class="view edit-text-view login-ed-text" type="text" placeholder="请输入手机号" />
+                <input id="ed-userphone" v-model="phone" name="" class="view edit-text-view login-ed-text" type="text"
+                    placeholder="请输入手机号" />
             </div>
 
             <div class="input-form-line gravity-center">
@@ -53,7 +58,8 @@
                 <label class="view text-view login-label" for="ed-username">
                     姓&nbsp;名:
                 </label>
-                <input id="ed-username" name="" class="view edit-text-view login-ed-text" type="text" placeholder="请输入姓名" />
+                <input id="ed-username" v-model="name" name="" class="view edit-text-view login-ed-text" type="text"
+                    placeholder="请输入姓名" />
             </div>
 
             <div class="input-form-line gravity-center">
@@ -63,7 +69,8 @@
                 <label class="view text-view login-label" for="ed-alipay">
                     支付宝:
                 </label>
-                <input id="ed-alipay" name="" class="view edit-text-view login-ed-text" type="text" placeholder="请输入支付宝" />
+                <input id="ed-alipay" v-model="zfbCode" name="" class="view edit-text-view login-ed-text" type="text"
+                    placeholder="请输入支付宝" />
             </div>
 
             <div class="input-form-line gravity-center">
@@ -73,7 +80,8 @@
                 <label class="view text-view login-label" for="ed-invitecode">
                     邀请码:
                 </label>
-                <input id="ed-invitecode" name="" class="view edit-text-view login-ed-text" type="text" placeholder="请输入邀请码" />
+                <input id="ed-invitecode" v-model="otherInviteCode" name="" class="view edit-text-view login-ed-text"
+                    type="text" placeholder="请输入邀请码" />
             </div>
 
             <div class="input-form-line gravity-center">
@@ -83,24 +91,26 @@
                 <label class="view text-view login-label" for="ed-verifycode" id="lb-verify-code">
                     验证码:
                 </label>
-                <input id="ed-verifycode" name="" class="view edit-text-view login-ed-text" type="text" placeholder="请输入验证码" />
+                <input id="ed-verifycode" v-model="verCode" name="" class="view edit-text-view login-ed-text" type="text"
+                    placeholder="请输入验证码" />
                 <span class="view" id="send-code-button">
-                    发送
+                    <!-- 发送 -->
+                    <img id="send-code-button" class="vcode" :src="vcodeImg" @click="changeImg">
                 </span>
             </div>
 
         </div>
 
-        <div class="view text-view button" id="register-button">
+        <div class="view text-view button" id="register-button" @click="rigsterSubmit">
             注册
         </div>
 
-          <!-- 注册按钮 -->
-          <div class="view-parent flex gravity-center">
-                <span class="view text-view center-horizontal" id="register-protocol">
-                    注册即<a>同意注册协议</a>
-                </span>
-            </div>
+        <!-- 注册按钮 -->
+        <div class="view-parent flex gravity-center">
+            <span class="view text-view center-horizontal" id="register-protocol">
+                注册即<a>同意注册协议</a>
+            </span>
+        </div>
     </div>
 </body>
 <script>
@@ -112,6 +122,94 @@
             });
         });
     });
+
+    function getRandom(n) {
+        return Math.floor(Math.random() * n + 1)
+    }
+
+    var vue = new Vue({
+        el: "#content",
+        mounted() {
+            this.changeImg()
+        },
+        data: {
+            account: '',
+            password: '',
+            phone: '',
+            name: '',
+            zfbCode: '',
+            otherInviteCode: '',
+            verCode: '',
+            vcodeImg: '',
+            verCodeKey: ''
+        },
+        methods: {
+            rigsterSubmit: function () {
+                var url = webServer.data.baseURL + webServer.data.rigster
+                var params = {
+                    account: this.account,
+                    password: this.password,
+                    phone: this.phone,
+                    name: this.name,
+                    zfbCode: this.zfbCode,
+                    otherInviteCode: this.otherInviteCode,
+                    verCode: this.verCode,
+                    verCodeKey: this.verCodeKey
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: JSON.stringify(params),
+                    crossDomain: true,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        if (data.code == 1) {
+                            // 保存用户信息
+                            var result = data.result
+                            account.data.userId = result.user.id
+                            account.data.name = result.user.name
+                            account.data.phone = result.user.phone
+
+                            account.data.account = result.account
+                            account.data.token = result.token
+                            console.log(account.data)
+
+                            // 跳转到主界面
+                            window.location.href = "home.html";
+                            return;
+
+                        } else if (data.code == 4002) {
+                            alert(logger.data.ERROR_PARAMETERS_EXIST_ACCOUNT);
+                        } else if (data.code == 4003) {
+                            alert(logger.data.ERROR_PARAMETERS_EXIST_NAME);
+                        } else if (data.code == 4004) {
+                            alert(logger.data.ERROR_PARAMETERS_EXIST_PHONE);
+                        } else if (data.code == 4005) {
+                            alert(logger.data.ERROR_PARAMETERS_EXIST_ZFB_CODE);
+                        } else if (data.code == 4006) {
+                            alert(logger.data.ERROR_PARAMETERS_NOT_FOUND_INVITE_CODE);
+                        } else if (data.code == 4007) {
+                            alert(logger.data.ERROR_PARAMETERS_ERROR_VER_CODE);
+                        } else if (data.code == 4008) {
+                            alert(logger.data.ERROR_PARAMETERS_EXIST_ACCOUNT);
+                        } else if (data.code == 2003) {
+                            alert(logger.data.ERROR_ACCOUNT_REGISTER);
+                        }
+
+                        vue.changeImg();
+                    },
+                    error: function (data) {
+                        alert(JSON.stringify(data))
+                    }
+                })
+            },
+            changeImg: function () {
+                this.verCodeKey = getRandom(999)
+                this.vcodeImg = webServer.data.baseURL + webServer.data.vCodeImg + "/" + this.verCodeKey
+            }
+        }
+    })
 </script>
 
 </html>
