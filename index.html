@@ -11,7 +11,7 @@
     <div id="toolbar-container">
     </div>
     <div id="content">
-        <div id="login-input-form" class="view-parent card-view gravity-vertical">
+        <div class="view-parent card-view gravity-vertical input-form">
 
             <!-- 用户名输入框 开始 -->
             <div class="input-form-line gravity-center">
@@ -19,7 +19,7 @@
                     <img src="img/user.png">
                 </span>
                 <label class="view text-view login-label" for="ed-username">
-                    账 号:
+                    账&nbsp;号:
                 </label>
                 <input id="ed-username" class="view edit-text-view login-ed-text" type="text" placeholder="请输入用户名" />
             </div>
@@ -35,7 +35,7 @@
                     <img src="img/password.png">
                 </span>
                 <label class="view text-view login-label" for="ed-password">
-                    密 码:
+                    密&nbsp;码:
                 </label>
                 <input id="ed-password" class="view edit-text-view login-ed-text" type="text" placeholder="请输入密码" />
             </div>
@@ -60,15 +60,15 @@
 
         <!-- 登录按钮 -->
         <div class="gravity-center">
-            <span class="view text-view button" id="login-button">
+            <span class="view text-view button oneline-button" id="login-button">
                 登录
             </span>
         </div>
 
 
         <!-- 注册按钮 -->
-        <div id="register-container">
-            <span class="view text-view" id="register-button">
+        <div id="register-container" class="view-parent gravity-center-horizontal">
+            <span class="view text-view layout-gravity-bottom " id="register-button">
                 还未注册？<a>点击注册</a>
             </span>
         </div>

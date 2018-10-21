@@ -1,0 +1,90 @@
+<!-- 卖出页面 -->
+<html>
+
+<head>
+    <script src="script/jquery.js"></script>
+    <script src="script/toolbar.js"></script>
+    <link href="css/base.css" rel="stylesheet" type="text/css" />
+    <link href="css/sale.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div id="toolbar-container">
+    </div>
+    <div id="content">
+        <div class="view-parent card-view gravity-vertical input-form">
+
+            <!-- 数量输入框 开始 -->
+            <div class="input-form-line gravity-center">
+                <span class="view ">
+                    <img src="img/ammount.png">
+                </span>
+                <label class="view text-view login-label" for="ed-ammount">
+                    数&nbsp;量:
+                </label>
+                <input id="ed-ammount" class="view edit-text-view login-ed-text" type="text" placeholder="请输入数量" />
+            </div>
+            <!-- 数量输入框 结束 -->
+
+            <!-- 水平分割线 -->
+            <div class="input-form-line horizontal-line"></div>
+            <!-- 水平分割线 -->
+
+            <!-- 比率输入框 开始 -->
+            <div class="input-form-line gravity-center">
+                <span class="view ">
+                    <img src="img/rate.png">
+                </span>
+                <label class="view text-view login-label" for="ed-rate">
+                    比&nbsp;率:
+                </label>
+                <input id="ed-rate" class="view edit-text-view login-ed-text" type="text" placeholder="请输入比率" />
+            </div>
+            <!-- 比率输入框 结束 -->
+
+            <!-- 水平分割线 -->
+            <div class="input-form-line horizontal-line"></div>
+            <!-- 水平分割线 -->
+
+            <!-- 金额输入框 开始 -->
+            <div class="input-form-line gravity-center">
+                <span class="view ">
+                    <img src="img/money.png">
+                </span>
+                <label class="view text-view login-label" for="ed-money">
+                    金&nbsp;额:
+                </label>
+                <input id="ed-money" class="view edit-text-view login-ed-text" type="text" placeholder="请输入金额" />
+            </div>
+            <!-- 金额输入框 结束 -->
+        </div>
+
+        <!-- 买入按钮 -->
+        <div class="gravity-center">
+            <span class="view text-view button oneline-button" id="buy-button">
+                卖出
+            </span>
+        </div>
+
+          <!-- 提示信息 -->
+          <div class="view-parent gravity-center-horizontal layout-gravity-bottom" id="hint-container">
+            <span class="view text-view hint-content layout-gravity-bottom" id="sale-hint">
+                请仔细核对是否到账，一旦卖出，将丧失资格，将被禁用
+            </span>
+        </div>
+        
+    </div>
+</body>
+<script>
+    $(function () {
+        toolbar = new Toolbar("#toolbar-container", function () {
+            toolbar.title.html("卖出");
+            toolbar.backButton.click(function () {
+                window.location.href = "register.html";
+            });
+        });
+
+    });
+</script>
+
+</html>

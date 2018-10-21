@@ -40,6 +40,11 @@ html {
   align-items: center;
   justify-content: center;
 }
+.gravity-center-horizontal {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: center;
+}
 .gravity-vertical {
   display: block ;
 }
@@ -83,4 +88,18 @@ html {
 }
 .center-horizontal {
   justify-self: center;
+}
+.input-form {
+  text-align: center ;
+  margin: 4rem 2rem 10rem 2rem;
+}
+.oneline-button {
+  width: 100%;
+}
+.layout-gravity-bottom {
+  align-self: flex-end;
+  color: #0C86F5 ;
+}
+.hint-content {
+  color: #0C86F5;
 }

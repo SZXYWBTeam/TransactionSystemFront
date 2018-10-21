@@ -1,0 +1,81 @@
+<!-- 提现页面 -->
+<html>
+
+<head>
+    <script src="script/jquery.js"></script>
+    <script src="script/toolbar.js"></script>
+    <link href="css/base.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div id="toolbar-container">
+    </div>
+    <div id="content">
+        <div class="view-parent card-view gravity-vertical input-form" id="">
+
+            <!-- 旧密码输入框 开始 -->
+            <div class="input-form-line gravity-center">
+                <span class="view ">
+                    <img src="img/money.png">
+                </span>
+                <label class="view text-view login-label" for="ed-money">
+                    金&nbsp;额:
+                </label>
+                <input id="ed-money" class="view edit-text-view login-ed-text" type="text" placeholder="请输入金额" />
+            </div>
+            <!-- 旧密码输入框 结束 -->
+
+            <!-- 水平分割线 -->
+            <div class="input-form-line horizontal-line"></div>
+            <!-- 水平分割线 -->
+
+            <!-- 支付宝输入框 开始 -->
+            <div class="input-form-line gravity-center">
+                <span class="view ">
+                    <img src="img/alipay.png">
+                </span>
+                <label class="view text-view login-label" for="ed-alipay">
+                    支付宝:
+                </label>
+                <input id="ed-alipay" class="view edit-text-view login-ed-text" type="text" placeholder="请输入支付宝" />
+            </div>
+            <!-- 支付宝输入框 结束 -->
+
+            <!-- 水平分割线 -->
+            <div class="input-form-line horizontal-line"></div>
+            <!-- 水平分割线 -->
+
+            <!-- 电话输入框 开始 -->
+            <div class="input-form-line gravity-center">
+                <span class="view ">
+                    <img src="img/phone.png">
+                </span>
+                <label class="view text-view login-label" for="ed-phone">
+                    电&nbsp;话:
+                </label>
+                <input id="ed-phone" class="view edit-text-view login-ed-text" type="text" placeholder="请输入电话" />
+            </div>
+            <!-- 电话输入框 结束 -->
+        </div>
+
+        <!-- 提现按钮 -->
+        <div class="gravity-center">
+            <span class="view text-view button oneline-button" id="save-button">
+                提现
+            </span>
+        </div>
+    </div>
+</body>
+<script>
+    $(function () {
+        toolbar = new Toolbar("#toolbar-container", function () {
+            toolbar.title.html("提现");
+            toolbar.backButton.click(function () {
+                window.location.href = "index.html";
+            });
+        });
+
+    });
+</script>
+
+</html>
