@@ -55,25 +55,19 @@
                 <span class="view ">
                     <img src="img/verifycode.png">
                 </span>
-                <label class="view text-view login-label" for="ed-ed-verifycode">
+                <label class="view text-view login-label" for="ed-verifycode" id="verify-label">
                     验证码:
                 </label>
                 <input id="ed-verifycode" v-model="verifycode" class="view edit-text-view login-ed-text" type="text"
                     placeholder="请输入验证码" />
-                <span class="view">
-                    <img id="send-code-button" class="vcode" :src="vcodeImg" @click="changeImg">
-                </span>
+                <img id="send-code-button" class="vcode" :src="vcodeImg" @click="changeImg">
             </div>
             <!-- 验证码输入框 结束 -->
         </div>
 
         <!-- 登录按钮 -->
         <div class="gravity-center">
-<<<<<<< HEAD
-            <span class="view text-view button oneline-button" id="login-button">
-=======
-            <span class="view text-view button" id="login-button" @click="loginSubmit">
->>>>>>> 218d4a6d01f5339a0afab03ab5a29f84df4b1e72
+            <span class="view text-view button oneline-button" id="login-button" @click="loginSubmit">
                 登录
             </span>
         </div>
