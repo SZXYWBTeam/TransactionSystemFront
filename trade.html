@@ -4,25 +4,50 @@
 <head>
     <meta charset="utf-8">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    
+
+    <!-- 下拉刷新控件核心样式（修改过） -->
     <link href="css/minirefresh.css" rel="stylesheet" type="text/css" />
+    <!-- 下拉刷新控件基础样式 -->
     <link href="css/minirefresh-common.css" rel="stylesheet" type="text/css" />
+
     <link href="css/base.css" rel="stylesheet" type="text/css" />
+
+    <!-- 表格样式 -->
     <link href="css/table.css" rel="stylesheet" type="text/css" />
+    <!-- 交易界面的样式（有些细节需要自己手动改） -->
+    <link href="css/trade.css" rel="stylesheet" type="text/css" />
+
 </head>
 
 <body>
-    <nav id="toolbar-container" >
+    <nav id="toolbar-container">
     </nav>
-    <div id="content" class="view-parent">
-        <div class="table-title">
-            <span>Test title</span>
-        </div>
-        <div class="minirefresh-wrap" id="minirefresh">
+    <div id="content">
+        <!-- 下拉刷新wrapper -->
+        <div class="minirefresh-wrap table-content" id="minirefresh">
+
+            <!-- 下拉刷新滚动的内容视图 -->
             <div class="minirefresh-scroll">
-                <ul class="data-list" id="listdata">
-                    
-                </ul>
+
+                <!-- 表格标题头 -->
+                <div class="table-title gravity-center-vertical">
+                    <img src="img/trade-record.png" />
+                    <span>交易记录</span>
+                </div>
+
+                <!-- 表格内容 -->
+                <table class="data-list table-detail">
+                    <thead>
+                        <td>编号</td>
+                        <td>金额</td>
+                        <td>时间</td>
+                        <td>流向</td>
+                        <td>状态</td>
+                    </thead>
+                    <!-- 数据列表显示的位置 -->
+                    <tbody id="listdata">
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -39,41 +64,40 @@
             toolbar.backButton.hide();
         });
 
-        $("#register-button").click(function () {
-            window.location.href = "register.html";
-        });
 
+        //创建下拉刷新对象
         var miniRefresh = new MiniRefresh({
             container: '#minirefresh',
-            down: {
+            down: {//下拉刷新
                 callback: function () {
-                    $("#listdata").html("");
+                    //模拟ajax
                     setTimeout(function () {
+
+                        $("#listdata").html("");
                         // 结束下拉刷新
                         miniRefresh.endDownLoading(true);
                     }, 200);
                 }
             },
-            up: {
-
+            up: {//上拉加载
                 callback: function () {
-                    e = $("#listdata");
-                    e.html(e.html() + "<tr>");
-                    e.html(e.html() + "<td>test</td>");
-                    e.html(e.html() + "<td>test</td>");
-                    e.html(e.html() + "<td>test</td>");
-                    e.html(e.html() + "<td>test</td>");
-                    e.html(e.html() + "</tr>");
-                    // 结束下拉刷新
+                    //模拟ajax
                     setTimeout(function () {
-                        // 结束下拉刷新
+                        e = $("#listdata");
+                        content = "";
+
+                        for (i = 0; i < 5; i++) {
+                            content +=
+                                "<tr><td>test</td><td>test</td><td>test</td><td>test</td><td>test</td></tr>"
+                        }
+                        e.html(e.html() + content);
+
+                        // 结束下拉刷新 true 表示没有更多数据了
                         miniRefresh.endUpLoading(true);
                     }, 200);
-
                 }
             }
         });
-
     });
 </script>
 
