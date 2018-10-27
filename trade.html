@@ -1,0 +1,80 @@
+<!-- 交易记录 -->
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    
+    <link href="css/minirefresh.css" rel="stylesheet" type="text/css" />
+    <link href="css/minirefresh-common.css" rel="stylesheet" type="text/css" />
+    <link href="css/base.css" rel="stylesheet" type="text/css" />
+    <link href="css/table.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <nav id="toolbar-container" >
+    </nav>
+    <div id="content" class="view-parent">
+        <div class="table-title">
+            <span>Test title</span>
+        </div>
+        <div class="minirefresh-wrap" id="minirefresh">
+            <div class="minirefresh-scroll">
+                <ul class="data-list" id="listdata">
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script src="script/jquery.js"></script>
+<script src="script/toolbar.js"></script>
+<script src="script/minirefresh.js"></script>
+<script src="script/minirefresh.js"></script>
+<script>
+    $(function () {
+        toolbar = new Toolbar("#toolbar-container", function () {
+            toolbar.title.html("交易记录");
+            toolbar.backButton.hide();
+        });
+
+        $("#register-button").click(function () {
+            window.location.href = "register.html";
+        });
+
+        var miniRefresh = new MiniRefresh({
+            container: '#minirefresh',
+            down: {
+                callback: function () {
+                    $("#listdata").html("");
+                    setTimeout(function () {
+                        // 结束下拉刷新
+                        miniRefresh.endDownLoading(true);
+                    }, 200);
+                }
+            },
+            up: {
+
+                callback: function () {
+                    e = $("#listdata");
+                    e.html(e.html() + "<tr>");
+                    e.html(e.html() + "<td>test</td>");
+                    e.html(e.html() + "<td>test</td>");
+                    e.html(e.html() + "<td>test</td>");
+                    e.html(e.html() + "<td>test</td>");
+                    e.html(e.html() + "</tr>");
+                    // 结束下拉刷新
+                    setTimeout(function () {
+                        // 结束下拉刷新
+                        miniRefresh.endUpLoading(true);
+                    }, 200);
+
+                }
+            }
+        });
+
+    });
+</script>
+
+</html>
