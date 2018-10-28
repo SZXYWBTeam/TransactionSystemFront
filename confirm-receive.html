@@ -1,0 +1,94 @@
+<!-- 确认收款 -->
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <link href="css/base.css" rel="stylesheet" type="text/css" />
+    <link href="css/toolbar.css" rel="stylesheet" type="text/css" />
+    <link href="css/confirm-receive.css" rel="stylesheet" type="text/css" />
+    <link href="css/pair-table.css" rel="stylesheet" type="text/css" />
+    <link href="css/dialog.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div id="dialog-container">
+        <nav id="toolbar-container">
+        </nav>
+
+        <div class="view-parent gravity-vertical">
+            <div class="view-parent pair-table-container" id="table-container">
+
+            </div>
+
+            <div class="gravity-center">
+                <span class="view text-view button oneline-button" id="confirm-button">
+                    确认收款
+                </span>
+            </div>
+
+            <div class="view-parent flex gravity-center">
+                <span class="view text-view center-horizontal hint-content">
+                    请仔细核对是否到账，一旦确认将很难追回！
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+<script src="script/jquery.js"></script>
+<script src="script/pair-table.js"></script>
+<script src="script/toolbar.js"></script>
+<script src="script/dialog.js"></script>
+<script>
+    $(function () {
+        toolbar = new Toolbar("#toolbar-container", function () {
+            toolbar.title.html("确认收款");
+            toolbar.backButton.click(function () {
+                window.location.href = "home.html";
+            });
+        });
+
+        table = new PairTable("#table-container");
+        table.setPairs({
+            "订单编号：": "XI2298",
+            "买家账号：": "KD3232",
+            "买家上家：": "138293827",
+            "买家电话：": "1356245212",
+            "买入数量：": "2398232",
+            "现价金额：": "20000",
+            "卖家账号：": "匹配中",
+            "支 付 宝：": "匹配中",
+            "卖家上家：": "匹配中",
+            "卖家电话：": "匹配中",
+            "打款截图：": "<span onclick='showImg()'>查看</span>",
+        });
+        table.addPair("订单时间：", "20180201");
+        // table.tdVal("卖家账号：").css("color", "red");
+        table.tdVal("卖家账号：").matching(true);
+        table.tdVal("支 付 宝：").matching(true);
+        table.tdVal("卖家上家：").matching(true);
+        table.tdVal("卖家电话：").matching(true);
+        table.tdVal("打款截图：").matching(false);
+
+
+    });
+
+    //打款截图显示在对话框中
+    dialog = new Dialog("#dialog-container");
+
+    function showImg(src) {
+        dialog.show(
+            "<div id='test' class='view-parent card-view' style='background-color:#fff' onclick='test();'>test</div>"
+        );
+        $("#test").click(function (event) {
+            alert(123);
+            event.stopPropagation();
+        });
+    }
+</script>
+
+</html>

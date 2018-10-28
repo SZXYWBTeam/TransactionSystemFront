@@ -1,8 +1,8 @@
 function Toolbar(selecor, callback){
-    that = this ;
+    this_toolbar = this ;
     $(selecor).load("/TransactionSystem/commons/toolbar.html", function(){
-        that.title = $("#toolbar-title") ;
-        that.backButton = $("#toolbar-back-button") ;
-        callback(that);
+        this_toolbar.title = $("#toolbar-title") ;
+        this_toolbar.backButton = $("#toolbar-back-button") ;
+        callback(this_toolbar);
     }) ;
 }

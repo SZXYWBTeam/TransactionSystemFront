@@ -1,0 +1,12 @@
+.dialog-mask{
+    z-index: 1;
+    width: 100%;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.2);
+    top: 0px;
+    height: 170rem;
+    display: flex;
+    display: -webkit-flex;
+    align-items: center;
+    justify-content: center;
+}

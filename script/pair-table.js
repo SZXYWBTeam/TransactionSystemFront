@@ -2,7 +2,7 @@
 function PairTable(containerSelector) {
 
     this.container = $(containerSelector);
-    this.table = $("<table border='1'></table>");
+    this.table = $("<table class='pair-table'></table>");
     this.container.append(this.table);
     this.pairCache = {};
     this.refresh = function () {
@@ -12,7 +12,15 @@ function PairTable(containerSelector) {
     };
 
     this.addPair = function (key, text, notRefresh) {
-        this.pairCache[key] = $("<td>" + text + "</td>");
+        td = $("<td>" + text + "</td>") ;
+        td.matching = function(matching){
+            if(matching){
+                this.addClass("matching");
+            }else{
+                this.removeClass("matching");
+            }
+        };
+        this.pairCache[key] = td;
         if(!notRefresh){
             this.addTr(key) ;
         }
