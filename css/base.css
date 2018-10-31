@@ -102,6 +102,12 @@ body {
   background-color: #CCCCCC ;
   border-radius: 1rem;
 }
+.horizontal-dash-line {
+  height: 0px;
+  width: 100%;
+  padding: 0px;
+  border-top: 0.3rem dashed #778899;
+}
 .center-horizontal {
   justify-self: center;
 }

@@ -3,22 +3,189 @@
 
 <head>
     <meta charset="utf-8" />
-    <script src="script/jquery.js"></script>
-    <script src="script/toolbar.js"></script>
-    <script src="script/vue.js"></script>
-    <script src="script/data/vuedata.js"></script>
     <link href="css/base.css" rel="stylesheet" type="text/css" />
     <link href="css/index.css" rel="stylesheet" type="text/css" />
     <link href="css/home.css" rel="stylesheet" type="text/css" />
+    <link href="css/minirefresh.css" rel="stylesheet" type="text/css" />
+    <link href="css/minirefresh-common.css" rel="stylesheet" type="text/css" />
+    <link href="css/table.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
     <div id="toolbar-container">
     </div>
     <!--content-->
-    <div id="content" class="view-parent">
-        
+    <div id="content" class="view-parent gravity-vertical">
+        <!-- 用户个人信息 -->
+        <div class="dash-border" id="userinfo-container">
+            <span class="text-view gravity-center-vertical">
+                <span id="username-container" class="gravity-center-vertical one-of-three">
+                    <img src="img/user.png" />&nbsp;
+
+                    <!-- 用户名 -->
+                    欢迎<span id="username">XXX</span>
+                </span>
+
+                <span id="changeinfo-container" class="one-of-three">
+                    <!-- 修改资料按钮 -->
+                    <a>修改资料</a>
+                </span>
+                <span id="changepass-container" class="one-of-three">
+                    <!-- 修改密码按钮 -->
+                    <a>修改密码</a>
+                </span>
+            </span>
+        </div>
+        <!-- 用户个人信息结束 -->
+
+        <!-- 钱包 -->
+        <div class="dash-border" id="wallet-container">
+            <div class="view text-view gravity-center-vertical">
+                <span>
+                    <img src="img/money.png" />&nbsp;
+                    钱包
+                </span>
+            </div>
+            <table class="home-table">
+                <tr>
+                    <td colspan="4">
+                        <div class="horizontal-dash-line"></div>
+                    </td>
+                </tr>
+                <tr class="text-view view">
+                    <td class=" one-of-three">
+                        <!-- 持币数 -->
+                        持币：<span id="">1024</span>
+                    </td>
+                    <td class=" one-of-three" colspan="2">
+                        <!-- 比率 -->
+                        比率：<span id="">1.2</span>
+                        <!-- 价值 -->
+                        价值：<span id="">2501</span>
+                    </td>
+                    <td class=" one-of-three">
+                        <!-- 卖出 -->
+                        <a id="">卖出</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <div class="horizontal-dash-line"></div>
+                    </td>
+                </tr>
+                <tr class="text-view view">
+                    <td class="one-of-three">
+                        <!-- 推广链接 -->
+                        <a id="">推广链接</a>
+                    </td>
+                    <td class="one-of-three" colspan="2">
+                        <!-- 比率 -->
+                        直属：<span id="">80</span>
+                        <!-- 价值 -->
+                        佣金：<span id="">3000</span>
+                    </td>
+                    <td class=" one-of-three">
+                        <!-- 提出 -->
+                        <a id="">提出</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <div class="horizontal-dash-line"></div>
+                    </td>
+                </tr>
+                <tr class="text-view view">
+                    <td class=" one-of-three">
+                        购买数量
+                    </td>
+                    <td class=" one-of-three" colspan="2">
+                        <!-- 购买数量 -->
+                        <input type="text" id="buy-count-input" class="input-text" />
+                    </td>
+                    <td class="one-of-three">
+                        <!-- 买入 -->
+                        <a id="">买入</a>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <!-- 钱包结束 -->
+
+
+        <!-- 佣金记录 -->
+        <div id="commission-container">
+            <div class="dash-border">
+                <span class="text-view gravity-center-vertical">
+                    <span class="gravity-center-vertical one-of-three">
+                        <img src="img/trade-record.png" />&nbsp;
+                        佣金记录
+                    </span>
+                </span>
+            </div>
+
+            <!-- 下拉刷新wrapper -->
+            <div class="minirefresh-wrap table-content" id="commission-refresh">
+
+                <!-- 下拉刷新滚动的内容视图 -->
+                <div class="minirefresh-scroll">
+                    <!-- 表格内容 -->
+                    <table class="data-list table-detail">
+                        <thead>
+                            <td>编号</td>
+                            <td>金额</td>
+                            <td>时间</td>
+                            <td>流向</td>
+                            <td>状态</td>
+                        </thead>
+                        <!-- 数据列表显示的位置 -->
+                        <tbody id="commission-listdata">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- 佣金记录end -->
+
+
+        <!-- 交易记录 -->
+        <div id="trade-container">
+            <div class="dash-border" id="userinfo-container">
+                <span class="text-view gravity-center-vertical">
+                    <span class="gravity-center-vertical one-of-three">
+                        <img src="img/trade-record.png" />&nbsp;
+                        交易记录
+                    </span>
+                </span>
+            </div>
+
+            
+            <!-- 下拉刷新wrapper -->
+            <div class="minirefresh-wrap table-content" id="trade-refresh">
+
+                    <!-- 下拉刷新滚动的内容视图 -->
+                    <div class="minirefresh-scroll">
+                        <!-- 表格内容 -->
+                        <table class="data-list table-detail">
+                            <thead>
+                                <td>编号</td>
+                                <td>金额</td>
+                                <td>时间</td>
+                                <td>流向</td>
+                                <td>状态</td>
+                            </thead>
+                            <!-- 数据列表显示的位置 -->
+                            <tbody id="trade-listdata">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+        </div>
+        <!-- 交易记录end -->
+
+
     </div>
+
     <!--bottom-->
     <div id="menu" class="menu">
         <div id="home_page" class="subMenu text-center" data-src="charger.html">
@@ -35,12 +202,71 @@
         </div>
     </div>
 </body>
-
+<script src="script/jquery.js"></script>
+<script src="script/toolbar.js"></script>
+<script src="script/vue.js"></script>
+<script src="script/data/vuedata.js"></script>
+<script src="script/minirefresh.js"></script>
+<script src="script/minirefresh.js"></script>
 <script>
     $(function () {
         toolbar = new Toolbar("#toolbar-container", function () {
             toolbar.title.html("主页");
             toolbar.backButton.hide();
+        });
+
+        //佣金记录下拉刷新
+        var miniRefresh = new MiniRefresh({
+            container: '#commission-refresh',
+            down: {
+                callback: function () {
+                    setTimeout(function () {
+                        $("#commission-listdata").html("");
+                        miniRefresh.endDownLoading(true);
+                    }, 200);
+                }
+            },
+            up: {
+                callback: function () {
+                    setTimeout(function () {
+                        e = $("#commission-listdata");
+                        content = "";
+                        for (i = 0; i < 5; i++) {
+                            content +=
+                                "<tr><td>test</td><td>test</td><td>test</td><td>test</td><td>test</td></tr>"
+                        }
+                        e.html(e.html() + content);
+                        miniRefresh.endUpLoading(true);
+                    }, 200);
+                }
+            }
+        });
+
+          //交易记录下拉刷新
+          var miniRefresh = new MiniRefresh({
+            container: '#trade-refresh',
+            down: {
+                callback: function () {
+                    setTimeout(function () {
+                        $("#trade-listdata").html("");
+                        miniRefresh.endDownLoading(true);
+                    }, 200);
+                }
+            },
+            up: {
+                callback: function () {
+                    setTimeout(function () {
+                        e = $("#trade-listdata");
+                        content = "";
+                        for (i = 0; i < 5; i++) {
+                            content +=
+                                "<tr><td>test</td><td>test</td><td>test</td><td>test</td><td>test</td></tr>"
+                        }
+                        e.html(e.html() + content);
+                        miniRefresh.endUpLoading(true);
+                    }, 200);
+                }
+            }
         });
     });
 </script>

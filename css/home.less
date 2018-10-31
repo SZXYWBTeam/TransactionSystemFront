@@ -1,9 +1,43 @@
-
+@import "res/color.less";
 
 #content {
-    background: linear-gradient(to bottom right, #f5f454, #fbd1b7);
-    height: 146rem;
-    margin-bottom: 12rem;//空出bottom-navigation的高度
+    // background: linear-gradient(to bottom right, #f5f454, #fbd1b7);
+    // height: 146rem;
+    // margin-bottom: 12rem;//空出bottom-navigation的高度
+}
+
+.dash-border{
+    border-radius: 1rem;
+    border: 0.3rem dashed @separator-color;
+}
+
+.one-of-three{
+    text-align: center;
+    margin: 2rem;
+}
+
+#wallet-container{
+    margin-top: 6rem;
+}
+
+.home-table{
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+.home-table td{
+    font-size: 3rem;
+    padding: 1rem;
+}
+.home-table a{
+    color: red;
+}
+
+.input-text{
+    font-size: 4rem;
+    padding: 1rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
 }
 
 .menu {
@@ -16,6 +50,7 @@
     border-top: 1px solid #eee;
     font-size: 3rem;
     background-color: #000000;
+    z-index: 9999;
 }
 
 .subMenu {
@@ -51,4 +86,23 @@ img {
 
 .text-center {
     text-align: center
+}
+
+#commission-container{
+    margin-top: 6rem;
+}
+
+#commission-refresh{
+    top: 87rem;
+    height: 33rem;
+}
+
+#trade-container{
+    margin-top: 40rem;
+}
+
+#trade-refresh{
+    top: 138rem;
+    height: 100rem;
+    margin-bottom: 12rem;
 }
