@@ -45,13 +45,11 @@
 <script src="script/dialog.js"></script>
 <script>
     $(function () {
-        toolbar = new Toolbar("#toolbar-container", function () {
-            toolbar.title.html("确认收款");
-            toolbar.backButton.click(function () {
-                window.location.href = "home.html";
-            });
+        toolbar = new Toolbar("#toolbar-container");
+        toolbar.title.html("确认收款");
+        toolbar.backButton.click(function () {
+            window.location.href = "home.html";
         });
-
         table = new PairTable("#table-container");
         table.setPairs({
             "订单编号：": "XI2298",

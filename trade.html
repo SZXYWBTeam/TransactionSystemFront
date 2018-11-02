@@ -59,16 +59,15 @@
 <script src="script/minirefresh.js"></script>
 <script>
     $(function () {
-        toolbar = new Toolbar("#toolbar-container", function () {
-            toolbar.title.html("交易记录");
-            toolbar.backButton.hide();
-        });
+        toolbar = new Toolbar("#toolbar-container");
+        toolbar.title.html("交易记录");
+        toolbar.backButton.hide();
 
 
         //创建下拉刷新对象
         var miniRefresh = new MiniRefresh({
             container: '#minirefresh',
-            down: {//下拉刷新
+            down: { //下拉刷新
                 callback: function () {
                     //模拟ajax
                     setTimeout(function () {
@@ -79,7 +78,7 @@
                     }, 200);
                 }
             },
-            up: {//上拉加载
+            up: { //上拉加载
                 callback: function () {
                     //模拟ajax
                     setTimeout(function () {

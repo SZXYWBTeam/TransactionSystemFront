@@ -1,5 +1,6 @@
 <!-- 匹配中 -->
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -30,26 +31,25 @@
 <script src="script/toolbar.js"></script>
 <script>
     $(function () {
-        toolbar = new Toolbar("#toolbar-container", function () {
-            toolbar.title.html("匹配中");
-            toolbar.backButton.click(function () {
-                window.location.href = "home.html" ;
-            });
+        toolbar = new Toolbar("#toolbar-container");
+        toolbar.title.html("匹配中");
+        toolbar.backButton.click(function () {
+            window.location.href = "home.html";
         });
 
         table = new PairTable("#table-container");
         table.setPairs({
-            "订单编号：":"XI2298",
-            "买家账号：":"KD3232",
-            "买家上家：":"138293827",
-            "买家电话：":"1356245212",
-            "买入数量：":"2398232",
-            "现价金额：":"20000",
-            "卖家账号：":"匹配中",
-            "支 付 宝：":"匹配中",
-            "卖家上家：":"匹配中",
-            "卖家电话：":"匹配中",
-            "打款截图：":"匹配中",
+            "订单编号：": "XI2298",
+            "买家账号：": "KD3232",
+            "买家上家：": "138293827",
+            "买家电话：": "1356245212",
+            "买入数量：": "2398232",
+            "现价金额：": "20000",
+            "卖家账号：": "匹配中",
+            "支 付 宝：": "匹配中",
+            "卖家上家：": "匹配中",
+            "卖家电话：": "匹配中",
+            "打款截图：": "匹配中",
         });
         table.addPair("订单时间：", "20180201");
         // table.tdVal("卖家账号：").css("color", "red");

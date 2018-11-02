@@ -110,11 +110,10 @@
 <script>
     $(function () {
         count = 0;
-        toolbar = new Toolbar("#toolbar-container", function () {
-            toolbar.title.html("匹配列表");
-            toolbar.backButton.click(function () {
-                window.location.href = "../TransactionSystem/sale.html";
-            });
+        toolbar = new Toolbar("#toolbar-container");
+        toolbar.title.html("匹配列表");
+        toolbar.backButton.click(function () {
+            window.location.href = "../TransactionSystem/sale.html";
         });
 
 

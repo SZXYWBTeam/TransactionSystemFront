@@ -116,11 +116,10 @@
 </body>
 <script>
     $(function () {
-        toolbar = new Toolbar("#toolbar-container", function () {
-            toolbar.title.html("注册");
-            toolbar.backButton.click(function () {
-                window.location.href = "index.html";
-            });
+        toolbar = new Toolbar("#toolbar-container");
+        toolbar.title.html("注册");
+        toolbar.backButton.click(function () {
+            window.location.href = "index.html";
         });
     });
 
