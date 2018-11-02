@@ -27,37 +27,6 @@
   margin-left: 2rem;
   margin-right: 2rem;
 }
-.menu {
-  display: flex;
-  display: -webkit-flex;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  height: 12rem;
-  border-top: 1px solid #eee;
-  font-size: 3rem;
-  background-color: #000000;
-  z-index: 9999;
-}
-.subMenu {
-  display: flex;
-  display: -webkit-flex;
-  flex-direction: column;
-  width: 33.3333%;
-  background-color: #eee;
-  cursor: pointer;
-  align-items: center;
-  padding: 1rem;
-}
-.menu_name {
-  height: 5rem;
-  margin-top: 1rem;
-  background-color: #eee;
-}
-img.menu_img {
-  width: 6rem;
-  height: 6rem;
-}
 img {
   vertical-align: middle;
   border: 0;
@@ -76,7 +45,7 @@ img {
   height: 33rem;
 }
 #trade-container {
-  margin-top: 40rem;
+  margin-top: 6rem;
 }
 #trade-refresh {
   top: 138rem;

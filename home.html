@@ -3,8 +3,8 @@
 
 <head>
     <meta charset="utf-8" />
+    <title>主页</title>
     <link href="css/base.css" rel="stylesheet" type="text/css" />
-    <link href="css/index.css" rel="stylesheet" type="text/css" />
     <link href="css/home.css" rel="stylesheet" type="text/css" />
     <link href="css/minirefresh.css" rel="stylesheet" type="text/css" />
     <link href="css/minirefresh-common.css" rel="stylesheet" type="text/css" />
@@ -28,11 +28,11 @@
 
                 <span id="changeinfo-container" class="one-of-three">
                     <!-- 修改资料按钮 -->
-                    <a>修改资料</a>
+                    <a href="../TransactionSystem/personal.html">修改资料</a>
                 </span>
                 <span id="changepass-container" class="one-of-three">
                     <!-- 修改密码按钮 -->
-                    <a>修改密码</a>
+                    <a href="../TransactionSystem/password.html">修改密码</a>
                 </span>
             </span>
         </div>
@@ -65,7 +65,7 @@
                     </td>
                     <td class=" one-of-three">
                         <!-- 卖出 -->
-                        <a id="">卖出</a>
+                        <a href="sale.html">卖出</a>
                     </td>
                 </tr>
                 <tr>
@@ -86,7 +86,7 @@
                     </td>
                     <td class=" one-of-three">
                         <!-- 提出 -->
-                        <a id="">提出</a>
+                        <a href="cash.html">提出</a>
                     </td>
                 </tr>
                 <tr>
@@ -104,7 +104,7 @@
                     </td>
                     <td class="one-of-three">
                         <!-- 买入 -->
-                        <a id="">买入</a>
+                        <a href="buy.html">买入</a>
                     </td>
                 </tr>
             </table>
@@ -125,24 +125,20 @@
             </div>
 
             <!-- 下拉刷新wrapper -->
-            <div class="minirefresh-wrap table-content" id="commission-refresh">
-
-                <!-- 下拉刷新滚动的内容视图 -->
-                <div class="minirefresh-scroll">
-                    <!-- 表格内容 -->
-                    <table class="data-list table-detail">
-                        <thead>
-                            <td>编号</td>
-                            <td>金额</td>
-                            <td>时间</td>
-                            <td>流向</td>
-                            <td>状态</td>
-                        </thead>
-                        <!-- 数据列表显示的位置 -->
-                        <tbody id="commission-listdata">
-                        </tbody>
-                    </table>
-                </div>
+            <div class=" table-content" id="commission-refresh">
+                <!-- 表格内容 -->
+                <table class="table-detail">
+                    <thead>
+                        <td>编号</td>
+                        <td>金额</td>
+                        <td>时间</td>
+                        <td>流向</td>
+                        <td>状态</td>
+                    </thead>
+                    <!-- 数据列表显示的位置 -->
+                    <tbody id="commission-listdata">
+                    </tbody>
+                </table>
             </div>
         </div>
         <!-- 佣金记录end -->
@@ -159,9 +155,8 @@
                 </span>
             </div>
 
-
             <!-- 下拉刷新wrapper -->
-            <div class="minirefresh-wrap table-content" id="trade-refresh">
+            <div class="table-content" id="trade-refresh">
 
                 <!-- 下拉刷新滚动的内容视图 -->
                 <div class="minirefresh-scroll">
@@ -190,24 +185,6 @@
             </div>
         </div>
         <!-- 交易记录end -->
-
-
-    </div>
-
-    <!--bottom-->
-    <div id="menu" class="menu">
-        <div id="home_page" class="subMenu text-center" data-src="charger.html">
-            <img class="menu_img" data-imgname="" />
-            <div class="menu_name">主页</div>
-        </div>
-        <div id="transaction" class="subMenu text-center">
-            <img class="menu_img" data-imgname="" />
-            <div class="menu_name">交易</div>
-        </div>
-        <div id="personal" class="subMenu text-center" data-src="personal.html">
-            <img class="menu_img" data-imgname="" />
-            <div class="menu_name">个人</div>
-        </div>
     </div>
 </body>
 <script src="script/jquery.js"></script>
@@ -223,32 +200,21 @@
             toolbar.backButton.hide();
         });
 
-        //佣金记录下拉刷新
-        var miniRefresh = new MiniRefresh({
-            container: '#commission-refresh',
-            down: {
-                callback: function () {
-                    setTimeout(function () {
-                        $("#commission-listdata").html("");
-                        miniRefresh.endDownLoading(true);
-                    }, 200);
-                }
-            },
-            up: {
-                callback: function () {
-                    setTimeout(function () {
-                        e = $("#commission-listdata");
-                        content = "";
-                        for (i = 0; i < 5; i++) {
-                            content +=
-                                "<tr><td>test</td><td>test</td><td>test</td><td>test</td><td>test</td></tr>"
-                        }
-                        e.html(e.html() + content);
-                        miniRefresh.endUpLoading(true);
-                    }, 200);
-                }
-            }
-        });
+        e = $("#commission-listdata");
+        content = "";
+        for (i = 0; i < 5; i++) {
+            content +=
+                "<tr><td>test</td><td>test</td><td>test</td><td>test</td><td>test</td></tr>"
+        }
+        e.html(e.html() + content);
+
+        e = $("#trade-listdata");
+        content = "";
+        /*for (i = 0; i < 10; i++) {
+            content +=
+                "<tr><td>test</td><td>test</td><td>test</td><td>test</td><td>test</td></tr>"
+        }
+        e.html(e.html() + content);*/
 
         //交易记录下拉刷新
         var miniRefresh = new MiniRefresh({
@@ -274,6 +240,7 @@
                         e.html(e.html() + content);
                         miniRefresh.endUpLoading(true);
                     }, 200);*/
+                    miniRefresh.endUpLoading(true);
                 }
             }
         });
@@ -370,6 +337,7 @@
             }
         }
     })
+
 </script>
 
 </html>
