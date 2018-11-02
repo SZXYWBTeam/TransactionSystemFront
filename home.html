@@ -23,7 +23,7 @@
                     <img src="img/user.png" />&nbsp;
 
                     <!-- 用户名 -->
-                    欢迎<span id="username">XXX</span>
+                    欢迎<span id="username">{{name}}</span>
                 </span>
 
                 <span id="changeinfo-container" class="one-of-three">
@@ -55,13 +55,13 @@
                 <tr class="text-view view">
                     <td class=" one-of-three">
                         <!-- 持币数 -->
-                        持币：<span id="">1024</span>
+                        持币：<span id="">{{currency}}</span>
                     </td>
                     <td class=" one-of-three" colspan="2">
                         <!-- 比率 -->
-                        比率：<span id="">1.2</span>
+                        比率：<span id="">{{showRate}}</span>
                         <!-- 价值 -->
-                        价值：<span id="">2501</span>
+                        价值：<span id="">{{parseInt(currency*showRate)}}</span>
                     </td>
                     <td class=" one-of-three">
                         <!-- 卖出 -->
@@ -80,9 +80,9 @@
                     </td>
                     <td class="one-of-three" colspan="2">
                         <!-- 比率 -->
-                        直属：<span id="">80</span>
+                        直属：<span id="">{{vue.inviteCount}}</span>
                         <!-- 价值 -->
-                        佣金：<span id="">3000</span>
+                        佣金：<span id="">{{parseInt(vue.currency*vue.showRate*vue.showRate)}}</span>
                     </td>
                     <td class=" one-of-three">
                         <!-- 提出 -->
@@ -159,27 +159,27 @@
                 </span>
             </div>
 
-            
+
             <!-- 下拉刷新wrapper -->
             <div class="minirefresh-wrap table-content" id="trade-refresh">
 
-                    <!-- 下拉刷新滚动的内容视图 -->
-                    <div class="minirefresh-scroll">
-                        <!-- 表格内容 -->
-                        <table class="data-list table-detail">
-                            <thead>
-                                <td>编号</td>
-                                <td>金额</td>
-                                <td>时间</td>
-                                <td>流向</td>
-                                <td>状态</td>
-                            </thead>
-                            <!-- 数据列表显示的位置 -->
-                            <tbody id="trade-listdata">
-                            </tbody>
-                        </table>
-                    </div>
+                <!-- 下拉刷新滚动的内容视图 -->
+                <div class="minirefresh-scroll">
+                    <!-- 表格内容 -->
+                    <table class="data-list table-detail">
+                        <thead>
+                            <td>编号</td>
+                            <td>金额</td>
+                            <td>时间</td>
+                            <td>流向</td>
+                            <td>状态</td>
+                        </thead>
+                        <!-- 数据列表显示的位置 -->
+                        <tbody id="trade-listdata">
+                        </tbody>
+                    </table>
                 </div>
+            </div>
         </div>
         <!-- 交易记录end -->
 
@@ -242,8 +242,8 @@
             }
         });
 
-          //交易记录下拉刷新
-          var miniRefresh = new MiniRefresh({
+        //交易记录下拉刷新
+        var miniRefresh = new MiniRefresh({
             container: '#trade-refresh',
             down: {
                 callback: function () {
@@ -269,6 +269,68 @@
             }
         });
     });
+
+    var vue = new Vue({
+        el: "#content",
+        mounted() {
+            this.getWallet()
+        },
+        data: {
+            name: account.data.name,
+            rate: '',
+            showRate: account.wallet.showRate,
+            hideRate: account.wallet.hideRate,
+            inviteCount: account.wallet.inviteCount,
+            currency: ''
+        },
+        methods: {
+            getWallet: function () {
+                var url = webServer.data.baseURL + webServer.data.wallet
+                var parmas = {
+                    token: account.data.token
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    crossDomain: true,
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(parmas),
+                    success: function (data) {
+                        // 修改成功
+                        if (data.code == 1) {
+                            account.wallet.walletId = data.result.id
+                            account.wallet.rate = data.result.rate
+                            account.wallet.hideRate = data.result.hideRate
+                            account.wallet.inviteCount = data.result.inviteCount
+                            account.wallet.currency = data.result.currency
+
+                            vue.rate = data.result.rate
+                            vue.hideRate = data.result.hideRate
+                            vue.inviteCount = data.result.inviteCount
+                            vue.currency = data.result.currency
+                            if (data.result.rate == 0)
+                                vue.showRate = data.result.hideRate
+                            else
+                                vue.showRate = data.result.rate
+
+                            console.log(vue.currency * vue.hideRate)
+
+                            return;
+                        } else {
+                            alert(data.message);
+                        }
+                    },
+                    error: function (data) {
+                        alert(JSON.stringify(data));
+                    }
+                })
+            },
+            getTransList: function () {
+
+            }
+        }
+    })
 </script>
 
 </html>

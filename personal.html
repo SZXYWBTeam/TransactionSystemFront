@@ -4,6 +4,8 @@
 <head>
     <script src="script/jquery.js"></script>
     <script src="script/toolbar.js"></script>
+    <script src="script/vue.js"></script>
+    <script src="script/data/vuedata.js"></script>
     <link href="css/personal.css" rel="stylesheet" type="text/css" />
     <link href="css/base.css" rel="stylesheet" type="text/css" />
 </head>
@@ -22,7 +24,8 @@
                 <label class="view text-view login-label" for="ed-phone">
                     手机号:
                 </label>
-                <input id="ed-phone" class="view edit-text-view login-ed-text" type="text" placeholder="请输入手机号" />
+                <input id="ed-phone" v-model="phone" class="view edit-text-view login-ed-text" type="text" placeholder="请输入手机号" />
+                <div></div>
             </div>
             <!-- 手机号输入框 结束 -->
 
@@ -38,7 +41,7 @@
                 <label class="view text-view login-label" for="ed-name">
                     姓&nbsp;名:
                 </label>
-                <input id="ed-name" class="view edit-text-view login-ed-text" type="text" placeholder="请输入密姓名" />
+                <input id="ed-name" v-model="name" class="view edit-text-view login-ed-text" type="text" placeholder="请输入密姓名" />
             </div>
             <!-- 姓名输入框 结束 -->
 
@@ -54,14 +57,15 @@
                 <label class="view text-view login-label" for="ed-aplipay">
                     支付宝:
                 </label>
-                <input id="ed-aplipay" class="view edit-text-view login-ed-text" type="text" placeholder="请输入支付宝" />
+                <input id="ed-aplipay" v-model="zfbCode" class="view edit-text-view login-ed-text" type="text"
+                    placeholder="请输入支付宝" />
             </div>
             <!-- 支付宝输入框 结束 -->
         </div>
 
         <!-- 修改按钮 -->
         <div class="gravity-center">
-            <span class="view text-view button oneline-button" id="save-button">
+            <span class="view text-view button oneline-button" id="save-button" @click="updateSubmit">
                 修改
             </span>
         </div>
@@ -76,6 +80,46 @@
             });
         });
     });
+
+    new Vue({
+        el: "#content",
+        data: {
+            phone: account.data.phone,
+            name: account.data.name,
+            zfbCode: account.data.zfbCode,
+        },
+        methods: {
+            updateSubmit: function () {
+                var url = webServer.data.baseURL + webServer.data.updateInfo
+                var parmas = {
+                    phone: this.phone,
+                    name: this.name,
+                    zfbCode: this.zfbCode,
+                    token: account.data.token
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    crossDomain: true,
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(parmas),
+                    success: function (data) {
+                        // 修改成功
+                        if (data.code == 1) {
+                            alert("修改成功");
+                            return;
+                        } else {
+                            alert(data.message);
+                        }
+                    },
+                    error: function (data) {
+                        alert(JSON.stringify(data));
+                    }
+                })
+            }
+        }
+    })
 </script>
 
 </html>

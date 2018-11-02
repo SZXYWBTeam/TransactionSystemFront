@@ -3,17 +3,31 @@ var webServer = {
         baseURL: "http://localhost:8080",
         login: "/bbc/account/login",
         rigster: "/bbc/account/register",
-        vCodeImg: "/bbc/account/verCode"
+        vCodeImg: "/bbc/account/verCode",
+        updatePwd: "/bbc/account/updatePwd",
+        updateInfo: "/bbc/account/updateInfo",
+        wallet: "/bbc/wallet",
+        sale: "/bbc/wallet/sale",
+        buy: "/bbc/wallet/buy"
     }
 }
 
 var account = {
     data: {
         userId: "",
-        name: "",
+        name: "测试",
         phone: "",
         account: "",
-        token: ""
+        zfbCode: "",
+        token: "OGU5ODg0MWItZTAwNi00M2Y4LWJmMjgtNWNjOTBiMjA2MjQy"
+    },
+    wallet: {
+        walletId: "",
+        rate: 1.0,
+        hideRate: "",
+        showRate: "",
+        inviteCount: "",
+        currency: ""
     }
 }
 
@@ -28,6 +42,8 @@ var logger = {
         ERROR_PARAMETERS_NOT_FOUND_INVITE_CODE: "不存在这个邀请码",
         ERROR_PARAMETERS_ERROR_VER_CODE: "验证码错误",
         ERROR_ACCOUNT_REGISTER: "账户注册失败",
-        ERROR_SERVICE: "服务器错误"
+        ERROR_SERVICE: "服务器错误",
+        ERROR_PARAMETERS: "参数错误",
+        ERROR_NOT_FOUND_USER: "请先登陆"
     }
 }

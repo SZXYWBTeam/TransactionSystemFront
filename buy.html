@@ -4,6 +4,8 @@
 <head>
     <script src="script/jquery.js"></script>
     <script src="script/toolbar.js"></script>
+    <script src="script/vue.js"></script>
+    <script src="script/data/vuedata.js"></script>
     <link href="css/base.css" rel="stylesheet" type="text/css" />
 </head>
 
@@ -21,7 +23,8 @@
                 <label class="view text-view login-label" for="ed-ammount">
                     数&nbsp;量:
                 </label>
-                <input id="ed-ammount" class="view edit-text-view login-ed-text" type="text" placeholder="请输入数量" />
+                <input id="ed-ammount" v-model="currency" class="view edit-text-view login-ed-text" type="text"
+                    placeholder="请输入数量" />
             </div>
             <!-- 数量输入框 结束 -->
 
@@ -37,7 +40,7 @@
                 <label class="view text-view login-label" for="ed-rate">
                     比&nbsp;率:
                 </label>
-                <input id="ed-rate" class="view edit-text-view login-ed-text" type="text" placeholder="请输入比率" />
+                <input id="ed-rate" v-model="rate" class="view edit-text-view login-ed-text" type="text" placeholder="请输入比率" />
             </div>
             <!-- 比率输入框 结束 -->
 
@@ -53,7 +56,8 @@
                 <label class="view text-view login-label" for="ed-money">
                     金&nbsp;额:
                 </label>
-                <input id="ed-money" class="view edit-text-view login-ed-text" type="text" placeholder="请输入金额" />
+                <input id="ed-money" :value="rate*currency"/buy/buy class="view edit-text-view login-ed-text" type="text"
+                    placeholder="请输入金额" />
             </div>
             <!-- 金额输入框 结束 -->
         </div>
@@ -77,6 +81,50 @@
         });
 
     });
+
+    new Vue({
+        el: "#content",
+        data: {
+            currency: parseInt(2),
+            rate: parseInt(account.wallet.rate),
+            isSale: true
+        },
+        methods: {
+            doSale: function () {
+                var url = webServer.data.baseURL + webServer.data.buy
+                var parmas = {
+                    currency: this.currency,
+                    rate: this.rate,
+                    worth: this.currency * this.rate,
+                    isSale: true,
+                    token: account.data.token
+                };
+
+                console.log(url)
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    crossDomain: true,
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(parmas),
+                    success: function (data) {
+                        // 成功买入
+                        if (data.code == 1) {
+                            alert("成功生成订单");
+                            // TODO 跳转到订单匹配界面
+                            return;
+                        } else {
+                            alert(data.message);
+                        }
+                    },
+                    error: function (data) {
+                        alert(JSON.stringify(data));
+                    }
+                })
+            }
+        }
+    })
 </script>
 
 </html>

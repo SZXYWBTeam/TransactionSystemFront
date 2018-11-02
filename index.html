@@ -112,7 +112,7 @@
         },
         methods: {
             loginSubmit: function () {
-                var url = webServer.data.baseURL + webServer.data.login;
+                var url = webServer.data.baseURL + webServer.data.login
                 var parmas = {
                     account: this.account,
                     password: this.pwd,
@@ -136,6 +136,7 @@
                             account.data.phone = result.user.phone
 
                             account.data.account = result.account
+                            account.data.zfbCode = result.zfbCode
                             account.data.token = result.token
 
                             console.log(account.data)
