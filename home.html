@@ -80,9 +80,9 @@
                     </td>
                     <td class="one-of-three" colspan="2">
                         <!-- 比率 -->
-                        直属：<span id="">{{vue.inviteCount}}</span>
+                        直属：<span id="">{{inviteCount}}</span>
                         <!-- 价值 -->
-                        佣金：<span id="">{{parseInt(vue.currency*vue.showRate*vue.showRate)}}</span>
+                        佣金：<span id="">{{parseInt(currency*showRate*showRate)}}</span>
                     </td>
                     <td class=" one-of-three">
                         <!-- 提出 -->
@@ -158,19 +158,30 @@
             <!-- 下拉刷新wrapper -->
             <div class="table-content" id="trade-refresh">
 
-                <!-- 表格内容 -->
-                <table class="data-list table-detail">
-                    <thead>
-                        <td>编号</td>
-                        <td>金额</td>
-                        <td>时间</td>
-                        <td>流向</td>
-                        <td>状态</td>
-                    </thead>
-                    <!-- 数据列表显示的位置 -->
-                    <tbody id="trade-listdata">
-                    </tbody>
-                </table>
+                <!-- 下拉刷新滚动的内容视图 -->
+                <div class="minirefresh-scroll">
+                    <!-- 表格内容 -->
+                    <table class="data-list table-detail">
+                        <thead>
+                            <td>编号</td>
+                            <td>金额</td>
+                            <td>时间</td>
+                            <td>流向</td>
+                            <td>状态</td>
+                        </thead>
+                        <!-- 数据列表显示的位置 -->
+                        <tbody id="trade-listdata">
+                            <tr v-for="item of transList">
+                                <td>{{item.serialNumber}}</td>
+                                <td>{{item.worth}}</td>
+                                <td>{{item.updateAt}}</td>
+                                <td v-if="item.buyer!=null && item.buyer.id==userId">买入</td>
+                                <td v-else>卖出</td>
+                                <td>{{item.status}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         <!-- 交易记录end -->
@@ -198,77 +209,134 @@
 
         e = $("#trade-listdata");
         content = "";
-        for (i = 0; i < 10; i++) {
+        /*for (i = 0; i < 10; i++) {
             content +=
                 "<tr><td>test</td><td>test</td><td>test</td><td>test</td><td>test</td></tr>"
         }
-        e.html(e.html() + content);
+        e.html(e.html() + content);*/
 
-    });
-
-    /*
-        var vue = new Vue({
-            el: "#content",
-            mounted() {
-                this.getWallet()
+        //交易记录下拉刷新
+        var miniRefresh = new MiniRefresh({
+            container: '#trade-refresh',
+            down: {
+                callback: function () {
+                    setTimeout(function () {
+                        $("#trade-listdata").html("");
+                        miniRefresh.endDownLoading(true);
+                    }, 200);
+                }
             },
-            data: {
-                name: account.data.name,
-                rate: '',
-                showRate: account.wallet.showRate,
-                hideRate: account.wallet.hideRate,
-                inviteCount: account.wallet.inviteCount,
-                currency: ''
-            },
-            methods: {
-                getWallet: function () {
-                    var url = webServer.data.baseURL + webServer.data.wallet
-                    var parmas = {
-                        token: account.data.token
-                    };
-
-                    $.ajax({
-                        type: "POST",
-                        url: url,
-                        crossDomain: true,
-                        contentType: "application/json; charset=utf-8",
-                        data: JSON.stringify(parmas),
-                        success: function (data) {
-                            // 修改成功
-                            if (data.code == 1) {
-                                account.wallet.walletId = data.result.id
-                                account.wallet.rate = data.result.rate
-                                account.wallet.hideRate = data.result.hideRate
-                                account.wallet.inviteCount = data.result.inviteCount
-                                account.wallet.currency = data.result.currency
-
-                                vue.rate = data.result.rate
-                                vue.hideRate = data.result.hideRate
-                                vue.inviteCount = data.result.inviteCount
-                                vue.currency = data.result.currency
-                                if (data.result.rate == 0)
-                                    vue.showRate = data.result.hideRate
-                                else
-                                    vue.showRate = data.result.rate
-
-                                console.log(vue.currency * vue.hideRate)
-
-                                return;
-                            } else {
-                                alert(data.message);
-                            }
-                        },
-                        error: function (data) {
-                            alert(JSON.stringify(data));
+            up: {
+                callback: function () {
+                    vue.getTransList()
+                    /*setTimeout(function () {
+                        e = $("#trade-listdata");
+                        content = "";
+                        for (i = 0; i < 5; i++) {
+                            content +=
+                                "<tr><td>test</td><td>test</td><td>test</td><td>test</td><td>test</td></tr>"
                         }
-                    })
-                },
-                getTransList: function () {
-
+                        e.html(e.html() + content);
+                        miniRefresh.endUpLoading(true);
+                    }, 200);*/
+                    miniRefresh.endUpLoading(true);
                 }
             }
-        })
-        */
+        });
+    });
+
+    var vue = new Vue({
+        el: "#content",
+        mounted() {
+            this.getWallet()
+            //this.getTransList()
+        },
+        data: {
+            userId: account.data.userId,
+            name: account.data.name,
+            rate: '',
+            showRate: account.wallet.showRate,
+            hideRate: account.wallet.hideRate,
+            inviteCount: '',
+            currency: '',
+            transList: []
+        },
+        methods: {
+            getWallet: function () {
+                var url = webServer.data.baseURL + webServer.data.wallet
+                var parmas = {
+                    token: account.data.token
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    crossDomain: true,
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(parmas),
+                    success: function (data) {
+                        // 修改成功
+                        if (data.code == 1) {
+                            account.wallet.walletId = data.result.id
+                            account.wallet.rate = data.result.rate
+                            account.wallet.hideRate = data.result.hideRate
+                            account.wallet.inviteCouninviteCountt = data.result.inviteCount
+                            account.wallet.currency = data.result.currency
+
+                            vue.rate = data.result.rate
+                            vue.hideRate = data.result.hideRate
+                            vue.inviteCount = data.result.inviteCount
+                            vue.currency = data.result.currency
+                            if (data.result.rate == 0)
+                                vue.showRate = data.result.hideRate
+                            else
+                                vue.showRate = data.result.rate
+
+                            //console.log(vue.currency * vue.hideRate)
+
+                            return;
+                        } else {
+                            alert(data.message);
+                        }
+                    },
+                    error: function (data) {
+                        alert(JSON.stringify(data));
+                    }
+                })
+            },
+            getTransList: function () {
+                var url = webServer.data.baseURL + webServer.data.trans + "/0/5"
+                var parmas = {
+                    token: account.data.token
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    crossDomain: true,
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(parmas),
+                    success: function (data) {
+                        // 修改成功
+                        if (data.code == 1) {
+                            $.each(data.result, function (index, content) {
+                                vue.transList.push(content)
+                            })
+
+                            //console.log(vue.transList)
+                            return;
+                        } else {
+                            alert(data.message);
+                        }
+                    },
+                    error: function (data) {
+                        alert(JSON.stringify(data));
+                    }
+                })
+            }
+        }
+    })
+
 </script>
 
 </html>
