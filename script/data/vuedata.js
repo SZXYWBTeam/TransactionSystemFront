@@ -8,13 +8,14 @@ var webServer = {
         updateInfo: "/bbc/account/updateInfo",
         wallet: "/bbc/wallet",
         sale: "/bbc/wallet/sale",
-        buy: "/bbc/wallet/buy"
+        buy: "/bbc/wallet/buy",
+        trans: "/bbc/trans"
     }
 }
 
 var account = {
     data: {
-        userId: "",
+        userId: "06398791-f9a4-4c5d-a901-9457e1ee8f89",
         name: "测试",
         phone: "",
         account: "",

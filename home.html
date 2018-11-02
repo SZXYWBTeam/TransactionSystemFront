@@ -80,9 +80,9 @@
                     </td>
                     <td class="one-of-three" colspan="2">
                         <!-- 比率 -->
-                        直属：<span id="">{{vue.inviteCount}}</span>
+                        直属：<span id="">{{inviteCount}}</span>
                         <!-- 价值 -->
-                        佣金：<span id="">{{parseInt(vue.currency*vue.showRate*vue.showRate)}}</span>
+                        佣金：<span id="">{{parseInt(currency*showRate*showRate)}}</span>
                     </td>
                     <td class=" one-of-three">
                         <!-- 提出 -->
@@ -176,6 +176,14 @@
                         </thead>
                         <!-- 数据列表显示的位置 -->
                         <tbody id="trade-listdata">
+                            <tr v-for="item of transList">
+                                <td>{{item.serialNumber}}</td>
+                                <td>{{item.worth}}</td>
+                                <td>{{item.updateAt}}</td>
+                                <td v-if="item.buyer!=null && item.buyer.id==userId">买入</td>
+                                <td v-else>卖出</td>
+                                <td>{{item.status}}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -255,7 +263,8 @@
             },
             up: {
                 callback: function () {
-                    setTimeout(function () {
+                    vue.getTransList()
+                    /*setTimeout(function () {
                         e = $("#trade-listdata");
                         content = "";
                         for (i = 0; i < 5; i++) {
@@ -264,7 +273,7 @@
                         }
                         e.html(e.html() + content);
                         miniRefresh.endUpLoading(true);
-                    }, 200);
+                    }, 200);*/
                 }
             }
         });
@@ -274,14 +283,17 @@
         el: "#content",
         mounted() {
             this.getWallet()
+            //this.getTransList()
         },
         data: {
+            userId: account.data.userId,
             name: account.data.name,
             rate: '',
             showRate: account.wallet.showRate,
             hideRate: account.wallet.hideRate,
-            inviteCount: account.wallet.inviteCount,
-            currency: ''
+            inviteCount: '',
+            currency: '',
+            transList: []
         },
         methods: {
             getWallet: function () {
@@ -302,7 +314,7 @@
                             account.wallet.walletId = data.result.id
                             account.wallet.rate = data.result.rate
                             account.wallet.hideRate = data.result.hideRate
-                            account.wallet.inviteCount = data.result.inviteCount
+                            account.wallet.inviteCouninviteCountt = data.result.inviteCount
                             account.wallet.currency = data.result.currency
 
                             vue.rate = data.result.rate
@@ -314,7 +326,7 @@
                             else
                                 vue.showRate = data.result.rate
 
-                            console.log(vue.currency * vue.hideRate)
+                            //console.log(vue.currency * vue.hideRate)
 
                             return;
                         } else {
@@ -327,7 +339,34 @@
                 })
             },
             getTransList: function () {
+                var url = webServer.data.baseURL + webServer.data.trans + "/0/5"
+                var parmas = {
+                    token: account.data.token
+                };
 
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    crossDomain: true,
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(parmas),
+                    success: function (data) {
+                        // 修改成功
+                        if (data.code == 1) {
+                            $.each(data.result, function (index, content) {
+                                vue.transList.push(content)
+                            })
+
+                            //console.log(vue.transList)
+                            return;
+                        } else {
+                            alert(data.message);
+                        }
+                    },
+                    error: function (data) {
+                        alert(JSON.stringify(data));
+                    }
+                })
             }
         }
     })
