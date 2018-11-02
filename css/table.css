@@ -4,9 +4,9 @@
   border: 0.1rem solid #000000;
 }
 .table-content {
-  width: calc(96%);
-  margin-left: 2rem;
-  margin-right: 2rem;
+  width: 100%;
+  margin-left: 0rem;
+  margin-right: 0rem;
 }
 .table-detail {
   width: 100%;

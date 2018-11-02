@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<!-- 导航页 -->
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>导航</title>
+    <link href="css/base.css" rel="stylesheet" type="text/css" />
+    <link href="css/menu.css" rel="stylesheet" type="text/css" />
+    <link href="css/nav.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div>
+        <iframe src="home.html" id="content" height="100%" onload="changeFrameHeight(this)">
+
+        </iframe>
+        <!--bottom-->
+        <div id="menu" class="menu">
+            <div id="home_page" class="subMenu text-center" data-src="home.html">
+                <img class="menu_img" data-imgname="" src="img/home.png" />
+                <div class="menu_name">主页</div>
+            </div>
+            <div id="transaction" class="subMenu text-center" data-src="trade.html">
+                <img class="menu_img" data-imgname="" src="img/trade-record.png" />
+                <div class="menu_name">交易</div>
+            </div>
+            <div id="personal" class="subMenu text-center" data-src="personal.html" data-src="personal.html">
+                <img class="menu_img" data-imgname="" src="img/user.png" />
+                <div class="menu_name">个人</div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="script/jquery.js"></script>
+<script>
+    $(function () {
+        $(".subMenu").each(function (e) {
+            e = $(this);
+            e.click(function () {
+                $("#content").attr("src", e.attr("data-src"));
+            });
+        });
+    });
+
+    function changeFrameHeight(that) {
+        //电脑屏幕高度-iframe上面其他组件的高度
+        //例:我这里iframe上面还有其他一些div组件，一共的高度是120，则减去120
+        $(that).height(document.documentElement.clientHeight - $("#menu").height());
+
+    }
+</script>
+
+</html>

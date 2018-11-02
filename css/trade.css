@@ -3,4 +3,7 @@
   top: 15rem;
   /* 不需要占满全屏的话就设置高度 */
   /* height: 80rem; */
+  width: calc(100% - 4rem);
+  margin-left: 2rem;
+  margin-right: 2rem;
 }

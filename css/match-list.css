@@ -1,0 +1,25 @@
+#user-list-container {
+  margin-top: 4rem;
+}
+.user-choose-td {
+  width: 10rem;
+  height: 10rem;
+}
+.intel-match-td {
+  height: 10rem;
+}
+.user-chooser {
+  width: 6rem;
+  height: 6rem;
+}
+#user-refresh-container {
+  top: 75rem;
+  height: 100rem;
+  z-index: 0;
+  width: calc(96%);
+  margin-left: 2rem;
+  margin-right: 2rem;
+}
+#sale-button {
+  margin-top: 102rem;
+}
