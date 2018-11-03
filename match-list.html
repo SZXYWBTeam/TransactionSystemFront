@@ -61,7 +61,7 @@
 
         <!-- 用户列表 -->
         <div id="user-list-container">
-            <div class="dash-border view-parent">
+            <div class="dash-border view-parent" id="manual-match-title">
                 <span class="text-view gravity-center-vertical">
                     <span class="gravity-center-vertical one-of-three">
                         <img src="img/user.png" />&nbsp;
@@ -119,7 +119,7 @@
         toolbar = new Toolbar("#toolbar-container");
         toolbar.title.html("匹配列表");
         toolbar.backButton.click(function () {
-            window.location.href = "../TransactionSystem/sale.html";
+            window.location.href = "../TransactionSystem/home.html";
         });
 
 
@@ -166,25 +166,39 @@
                             success: function (data) {
                                 // 修改成功
                                 if (data.code == 1) {
-                                    $.each(data.result.transCard, function (index, content) {
+                                    $.each(data.result.transCard, function (
+                                        index, content) {
                                         html += "<tr>";
                                         html +=
-                                            "<td><input type='checkbox' value='" + content.serialNumber + "' class='user-chooser view' onclick='onUserChoose(this, this.checked)' serialNumber='"+ content.serialNumber +"' money='" + content.worth + "'/></td>"
-                                        html += "<td>" + content.buyers[0].name + "</td>"
-                                        html += "<td>" + content.worth + "</td>"
+                                            "<td><input type='checkbox' value='" +
+                                            content.serialNumber +
+                                            "' class='user-chooser view' onclick='onUserChoose(this, this.checked)' serialNumber='" +
+                                            content.serialNumber +
+                                            "' money='" + content.worth +
+                                            "'/></td>"
+                                        html += "<td>" + content.buyers[
+                                            0].name + "</td>"
+                                        html += "<td>" + content.worth +
+                                            "</td>"
                                         html += "</tr>";
                                     })
                                     e.html(e.html() + html);
 
                                     var m = $("#result-listdata")
                                     html = ""
-                                    $.each(data.result.recommendTransCard, function (index, content) {
-                                        html = "<tr>";
-                                        html += "<input style='display:none;' value='" + content.serialNumber + "' class='user-chooser view'/>"
-                                        html += "<td>" + content.buyers[0].name + "</td>"
-                                        html += "<td>" + content.worth + "</td>"
-                                        html += "</tr>";
-                                    })
+                                    $.each(data.result.recommendTransCard,
+                                        function (index, content) {
+                                            html = "<tr>";
+                                            html +=
+                                                "<input style='display:none;' value='" +
+                                                content.serialNumber +
+                                                "' class='user-chooser view'/>"
+                                            html += "<td>" + content.buyers[
+                                                0].name + "</td>"
+                                            html += "<td>" + content.worth +
+                                                "</td>"
+                                            html += "</tr>";
+                                        })
                                     m.html(m.html() + html);
                                     console.log(html)
                                     //count++;
@@ -205,6 +219,7 @@
         });
     });
 
+    var y = $("#manual-match-title").position().top ;
     /**
      * 选择中用户的回调
      */
@@ -212,7 +227,6 @@
         if (choose) {
             //选中的金额需要增加
             matchMoney += parseInt($(e).attr("money"))
-            matchList.push($(e).attr("serialNumber"))
         } else {
             //选中的金额需要减少
             matchMoney -= parseInt($(e).attr("money"))
@@ -228,7 +242,11 @@
         },
         methods: {
             doSale: function () {
-                
+                matchList = [];
+                $(".user-chooser:checked").each(function () {
+                    matchList.push($(this).attr("serialNumber"))
+                });
+                alert(matchList);
             },
             autoListDoSale: function () {
 

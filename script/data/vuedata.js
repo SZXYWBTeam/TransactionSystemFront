@@ -1,6 +1,6 @@
 var webServer = {
     data: {
-        baseURL: "http://localhost:8080",
+        baseURL: "http://192.168.0.103:8080",
         login: "/bbc/account/login",
         rigster: "/bbc/account/register",
         vCodeImg: "/bbc/account/verCode",
