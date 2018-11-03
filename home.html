@@ -194,10 +194,9 @@
 <script src="script/utils.js"></script>
 <script>
     $(function () {
-        toolbar = new Toolbar("#toolbar-container", function () {
-            toolbar.title.html("主页");
-            toolbar.backButton.hide();
-        });
+        toolbar = new Toolbar("#toolbar-container");
+        toolbar.title.html("主页");
+        toolbar.backButton.hide();
 
         e = $("#commission-listdata");
         content = "";

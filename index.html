@@ -10,7 +10,7 @@
     <script src="script/data/vuedata.js"></script>
     <script src="script/utils.js"></script>
     <link href="css/index.css" rel="stylesheet" type="text/css" />
-    
+
     <link href="css/base.css" rel="stylesheet" type="text/css" />
 </head>
 
@@ -45,7 +45,7 @@
                 <label class="view text-view login-label" for="ed-password">
                     密&nbsp;码:
                 </label>
-                <input id="ed-password" v-model="pwd" class="view edit-text-view login-ed-text" type="text" placeholder="请输入密码" />
+                <input id="ed-password" v-model="pwd" class="view edit-text-view login-ed-text" type="password" placeholder="请输入密码" />
             </div>
             <!-- 用户面输入框 结束 -->
 
@@ -86,10 +86,9 @@
 </body>
 <script>
     $(function () {
-        toolbar = new Toolbar("#toolbar-container", function () {
-            toolbar.title.html("登录");
-            toolbar.backButton.hide();
-        });
+        toolbar = new Toolbar("#toolbar-container");
+        toolbar.title.html("登录");
+        toolbar.backButton.hide();
 
         $("#register-button").click(function () {
             window.location.href = "register.html";

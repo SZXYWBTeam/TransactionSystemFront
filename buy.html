@@ -75,11 +75,10 @@
 </body>
 <script>
     $(function () {
-        toolbar = new Toolbar("#toolbar-container", function () {
-            toolbar.title.html("买入");
-            toolbar.backButton.click(function () {
-                window.location.href = "../TransactionSystem/home.html";
-            });
+        toolbar = new Toolbar("#toolbar-container");
+        toolbar.title.html("买入");
+        toolbar.backButton.click(function () {
+            window.location.href = "../TransactionSystem/home.html";
         });
 
     });

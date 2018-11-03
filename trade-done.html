@@ -33,11 +33,10 @@
 <script src="script/toolbar.js"></script>
 <script>
     $(function () {
-        toolbar = new Toolbar("#toolbar-container", function () {
-            toolbar.title.html("已完成");
-            toolbar.backButton.click(function () {
-                window.location.href = "home.html";
-            });
+        toolbar = new Toolbar("#toolbar-container");
+        toolbar.title.html("已完成");
+        toolbar.backButton.click(function () {
+            window.location.href = "home.html";
         });
 
         table = new PairTable("#table-container");
