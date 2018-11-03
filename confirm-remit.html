@@ -32,6 +32,11 @@
             </span>
         </div>
 
+        <form>
+            <!-- 上传图片 -->
+            <input type='file' hidden="hidden" id="file-input" />
+        </form>
+
     </div>
 </body>
 <script src="script/jquery.js"></script>
@@ -57,7 +62,7 @@
             "支 付 宝：": "匹配中",
             "卖家上家：": "匹配中",
             "卖家电话：": "匹配中",
-            "打款截图：": "<span class='upload-button'>上传中</span>",
+            "打款截图：": "<span class='upload-button' onclick='uploadFile()' id='upload-button'>上传</span>",
         });
         table.addPair("订单时间：", "20180201");
         // table.tdVal("卖家账号：").css("color", "red");
@@ -68,6 +73,19 @@
         table.tdVal("打款截图：").matching(false);
 
     });
+
+    $("#file-input").change(function () {
+        $("#upload-button").html(getFileName($("#file-input").val()));
+    });
+
+    function getFileName(file) { //通过第一种方式获取文件名
+        var pos = file.lastIndexOf("\\"); //查找最后一个\的位置
+        return file.substring(pos + 1); //截取最后一个\位置到字符长度，也就是截取文件名 
+    }
+
+    function uploadFile() {
+        $("#file-input").click();
+    }
 </script>
 
 </html>
