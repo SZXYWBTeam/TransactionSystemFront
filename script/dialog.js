@@ -11,7 +11,7 @@ function Dialog(containerSelector) {
     })
 
     this.show = function (html, title) {
-        if(this.content != null){
+        if (this.content != null) {
             this.content.remove();
         }
         this.content = $(html);
@@ -30,5 +30,6 @@ function Dialog(containerSelector) {
 
     this.showing = false;
     this.mask.hide();
+    this.mask.height(document.documentElement.clientHeight);
 
 }
