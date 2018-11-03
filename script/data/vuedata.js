@@ -9,26 +9,28 @@ var webServer = {
         wallet: "/bbc/wallet",
         sale: "/bbc/wallet/sale",
         buy: "/bbc/wallet/buy",
+        match: "/bbc/wallet/match",
         trans: "/bbc/trans"
     }
 }
 
 var account = {
     data: {
-        userId: "06398791-f9a4-4c5d-a901-9457e1ee8f89",
-        name: "测试",
+        userId: "",
+        name: "",
         phone: "",
         account: "",
         zfbCode: "",
-        token: "OGU5ODg0MWItZTAwNi00M2Y4LWJmMjgtNWNjOTBiMjA2MjQy"
+        token: ""
     },
     wallet: {
         walletId: "",
-        rate: 1.0,
+        rate: "",
         hideRate: "",
         showRate: "",
         inviteCount: "",
-        currency: ""
+        currency: "",
+        buyCount: ""
     }
 }
 

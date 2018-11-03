@@ -100,11 +100,11 @@
                     </td>
                     <td class=" one-of-three" colspan="2">
                         <!-- 购买数量 -->
-                        <input type="text" id="buy-count-input" class="input-text" />
+                        <input type="text" v-model="buyCount" id="buy-count-input" class="input-text" />
                     </td>
                     <td class="one-of-three">
                         <!-- 买入 -->
-                        <a href="buy.html">买入</a>
+                        <a href="javascript:void(0)" @click="doBuy">买入</a>
                     </td>
                 </tr>
             </table>
@@ -158,30 +158,28 @@
             <!-- 下拉刷新wrapper -->
             <div class="table-content" id="trade-refresh">
 
-                <!-- 下拉刷新滚动的内容视图 -->
-                <div class="minirefresh-scroll">
-                    <!-- 表格内容 -->
-                    <table class="data-list table-detail">
-                        <thead>
-                            <td>编号</td>
-                            <td>金额</td>
-                            <td>时间</td>
-                            <td>流向</td>
-                            <td>状态</td>
-                        </thead>
-                        <!-- 数据列表显示的位置 -->
-                        <tbody id="trade-listdata">
-                            <tr v-for="item of transList">
-                                <td>{{item.serialNumber}}</td>
-                                <td>{{item.worth}}</td>
-                                <td>{{item.updateAt}}</td>
-                                <td v-if="item.buyer!=null && item.buyer.id==userId">买入</td>
-                                <td v-else>卖出</td>
-                                <td>{{item.status}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+
+                <!-- 表格内容 -->
+                <table class="data-list table-detail">
+                    <thead>
+                        <td>编号</td>
+                        <td>金额</td>
+                        <td>时间</td>
+                        <td>流向</td>
+                        <td>状态</td>
+                    </thead>
+                    <!-- 数据列表显示的位置 -->
+                    <tbody id="trade-listdata">
+                        <tr v-for="(item, index) of transList" @click="doMatch(index)">
+                            <td>{{item.serialNumber}}</td>
+                            <td>{{item.worth}}</td>
+                            <td>{{item.updateAt}}</td>
+                            <td v-if="item.sellers!=null && item.sellers[0].id==userId">卖出</td>
+                            <td v-else>买入</td>
+                            <td>{{item.status}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
         <!-- 交易记录end -->
@@ -193,6 +191,7 @@
 <script src="script/data/vuedata.js"></script>
 <script src="script/minirefresh.js"></script>
 <script src="script/minirefresh.js"></script>
+<script src="script/utils.js"></script>
 <script>
     $(function () {
         toolbar = new Toolbar("#toolbar-container", function () {
@@ -216,126 +215,148 @@
         }
         e.html(e.html() + content);*/
 
-        //交易记录下拉刷新
-        var miniRefresh = new MiniRefresh({
-            container: '#trade-refresh',
-            down: {
-                callback: function () {
-                    setTimeout(function () {
-                        $("#trade-listdata").html("");
-                        miniRefresh.endDownLoading(true);
-                    }, 200);
-                }
+        var vue = new Vue({
+            el: "#content",
+            mounted() {
+                this.getWallet()
+                this.getTransList()
+                console.log(getCookie("name"))
             },
-            up: {
-                callback: function () {
-                    vue.getTransList()
-                    /*setTimeout(function () {
-                        e = $("#trade-listdata");
-                        content = "";
-                        for (i = 0; i < 5; i++) {
-                            content +=
-                                "<tr><td>test</td><td>test</td><td>test</td><td>test</td><td>test</td></tr>"
+            data: {
+                userId: getCookie("userId"),
+                name: getCookie("name"),
+                rate: '',
+                showRate: account.wallet.showRate,
+                hideRate: account.wallet.hideRate,
+                inviteCount: '',
+                currency: '',
+                buyCount: '',
+                token: getCookie("token"),
+                transList: []
+            },
+            methods: {
+                // 获取本用户钱包信息
+                getWallet: function () {
+                    var url = webServer.data.baseURL + webServer.data.wallet
+                    var parmas = {
+                        token: this.token
+                    };
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        crossDomain: true,
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(parmas),
+                        success: function (data) {
+                            // 修改成功
+                            if (data.code == 1) {
+                                account.wallet.walletId = data.result.id
+                                account.wallet.rate = data.result.rate
+                                account.wallet.hideRate = data.result.hideRate
+                                account.wallet.inviteCouninviteCountt = data.result.inviteCount
+                                account.wallet.currency = data.result.currency
+
+                                vue.rate = data.result.rate
+                                vue.hideRate = data.result.hideRate
+                                vue.inviteCount = data.result.inviteCount
+                                vue.currency = data.result.currency
+                                if (data.result.rate == 0) {
+                                    vue.showRate = data.result.hideRate
+                                    account.wallet.showRate = data.result.hideRate
+                                    setCookie("showRate", data.result.hideRate)
+                                }
+                                else {
+                                    vue.showRate = data.result.rate
+                                    account.wallet.showRate = data.result.rate
+                                    setCookie("showRate", data.result.rate)
+                                }
+
+                                //console.log(account.wallet.showRate)
+
+                                return;
+                            } else {
+                                alert(data.message);
+                            }
+                        },
+                        error: function (data) {
+                            alert(JSON.stringify(data));
                         }
-                        e.html(e.html() + content);
-                        miniRefresh.endUpLoading(true);
-                    }, 200);*/
-                    miniRefresh.endUpLoading(true);
+                    })
+                },
+                // 获取本用户交易记录
+                getTransList: function () {
+                    var url = webServer.data.baseURL + webServer.data.trans + "/0/5"
+                    var parmas = {
+                        token: this.token
+                    };
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        crossDomain: true,
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(parmas),
+                        success: function (data) {
+                            // 修改成功
+                            if (data.code == 1) {
+                                $.each(data.result, function (index, content) {
+                                    // 状态Formate
+                                    switch (content.status) {
+                                        case -1:
+                                            content.status = "待匹配"
+                                            break
+                                        case 0:
+                                            content.status = "已匹配"
+                                            break;
+                                        case 1:
+                                            content.status = "已完成"
+                                            break;
+                                        case 2:
+                                            content.status = "待支付"
+                                            break;
+                                    }
+
+                                    // 时间转换
+                                    var date = new Date(content.updateAt)
+                                    content.updateAt = date.getFullYear() + ""
+                                        + dataLeftCompleting(2, "0", date.getMonth())
+                                        + dataLeftCompleting(2, "0", date.getDate())
+                                    vue.transList.push(content)
+                                })
+
+                                //console.log(vue.transList)
+                                return;
+                            } else {
+                                alert(data.message);
+                            }
+                        },
+                        error: function (data) {
+                            alert(JSON.stringify(data));
+                        }
+                    })
+                },
+                // 前往买入界面
+                doBuy: function () {
+                    if (vue.buyCount == '' || vue.buyCount == null) {
+                        alert("请填写买入数量")
+                        return;
+                    }
+                    setCookie("buyCount", vue.buyCount)
+                    location.href = "buy.html"
+                },
+                doMatch: function (index) {
+                    if (this.transList[index].status != '待匹配')
+                        return
+
+                    setCookie("serialNumber", this.transList[index].serialNumber)
+                    setCookie("currency", this.transList[index].currency)
+                    setCookie("rate", this.transList[index].worth /this.transList[index].currency)
+                    setCookie("worth", this.transList[index].worth)
+                    location.href = "match-list.html"
                 }
             }
-        });
-    });
-
-    var vue = new Vue({
-        el: "#content",
-        mounted() {
-            this.getWallet()
-            //this.getTransList()
-        },
-        data: {
-            userId: account.data.userId,
-            name: account.data.name,
-            rate: '',
-            showRate: account.wallet.showRate,
-            hideRate: account.wallet.hideRate,
-            inviteCount: '',
-            currency: '',
-            transList: []
-        },
-        methods: {
-            getWallet: function () {
-                var url = webServer.data.baseURL + webServer.data.wallet
-                var parmas = {
-                    token: account.data.token
-                };
-
-                $.ajax({
-                    type: "POST",
-                    url: url,
-                    crossDomain: true,
-                    contentType: "application/json; charset=utf-8",
-                    data: JSON.stringify(parmas),
-                    success: function (data) {
-                        // 修改成功
-                        if (data.code == 1) {
-                            account.wallet.walletId = data.result.id
-                            account.wallet.rate = data.result.rate
-                            account.wallet.hideRate = data.result.hideRate
-                            account.wallet.inviteCouninviteCountt = data.result.inviteCount
-                            account.wallet.currency = data.result.currency
-
-                            vue.rate = data.result.rate
-                            vue.hideRate = data.result.hideRate
-                            vue.inviteCount = data.result.inviteCount
-                            vue.currency = data.result.currency
-                            if (data.result.rate == 0)
-                                vue.showRate = data.result.hideRate
-                            else
-                                vue.showRate = data.result.rate
-
-                            //console.log(vue.currency * vue.hideRate)
-
-                            return;
-                        } else {
-                            alert(data.message);
-                        }
-                    },
-                    error: function (data) {
-                        alert(JSON.stringify(data));
-                    }
-                })
-            },
-            getTransList: function () {
-                var url = webServer.data.baseURL + webServer.data.trans + "/0/5"
-                var parmas = {
-                    token: account.data.token
-                };
-
-                $.ajax({
-                    type: "POST",
-                    url: url,
-                    crossDomain: true,
-                    contentType: "application/json; charset=utf-8",
-                    data: JSON.stringify(parmas),
-                    success: function (data) {
-                        // 修改成功
-                        if (data.code == 1) {
-                            $.each(data.result, function (index, content) {
-                                vue.transList.push(content)
-                            })
-
-                            //console.log(vue.transList)
-                            return;
-                        } else {
-                            alert(data.message);
-                        }
-                    },
-                    error: function (data) {
-                        alert(JSON.stringify(data));
-                    }
-                })
-            }
-        }
+        })
     })
 
 </script>

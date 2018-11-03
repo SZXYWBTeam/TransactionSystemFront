@@ -8,6 +8,7 @@
     <script src="script/toolbar.js"></script>
     <script src="script/vue.js"></script>
     <script src="script/data/vuedata.js"></script>
+    <script src="script/utils.js"></script>
     <link href="css/index.css" rel="stylesheet" type="text/css" />
     
     <link href="css/base.css" rel="stylesheet" type="text/css" />
@@ -140,7 +141,14 @@
                             account.data.zfbCode = result.zfbCode
                             account.data.token = result.token
 
-                            console.log(account.data)
+                            setCookie("token", result.token)
+                            setCookie("userId", result.user.id)
+                            setCookie("name", result.user.name)
+                            setCookie("phone", result.user.phone)
+                            setCookie("account", result.account)
+                            setCookie("zfbCode", result.zfbCode)
+
+                            //console.log(account.data)
                             // 跳转到主界面
                             window.location.href = "home.html";
                             return;

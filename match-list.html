@@ -20,7 +20,7 @@
 
         <div class="view">
             <span class="text-view">
-                目标匹配金额：<span>0</span>
+                目标匹配金额：<span>{{matchWorth}}</span>
             </span>
         </div>
 
@@ -53,7 +53,7 @@
 
         <!-- 卖出按钮 -->
         <div class="gravity-center">
-            <span class="view text-view button oneline-button">
+            <span class="view text-view button oneline-button" @click="autoListDoSale">
                 卖出
             </span>
         </div>
@@ -69,7 +69,7 @@
                     </span>
                     <span class="text-view view">
                         &nbsp;已选择金额：
-                        <span>0</span>
+                        <span id="chooseMoney">0</span>
                     </span>
                 </span>
             </div>
@@ -96,7 +96,7 @@
 
         <!-- 卖出按钮 -->
         <div class="gravity-center" id="sale-button">
-            <span class="view text-view button oneline-button">
+            <span class="view text-view button oneline-button" @click="doSale">
                 卖出
             </span>
         </div>
@@ -107,7 +107,13 @@
 <script src="script/jquery.js"></script>
 <script src="script/toolbar.js"></script>
 <script src="script/minirefresh.js"></script>
+<script src="script/vue.js"></script>
+<script src="script/data/vuedata.js"></script>
+<script src="script/utils.js"></script>
 <script>
+    var matchMoney = 0
+    var matchList = []
+
     $(function () {
         count = 0;
         toolbar = new Toolbar("#toolbar-container", function () {
@@ -137,20 +143,63 @@
                     //模拟ajax
                     setTimeout(function () {
                         e = $("#user-listdata");
-                        html = "";
+                        var html = "";
+                        var url = webServer.data.baseURL + webServer.data.match;
+                        var parmas = {
+                            currency: getCookie("currency"),
+                            rate: getCookie("rate"),
+                            worth: getCookie("worth"),
+                            isSale: true,
+                            token: getCookie("token")
+                        };
 
-                        for (i = 0; i < 5; i++) {
-                            html += "<tr>";
-                            html +=
-                                "<td><input type='checkbox' class='user-chooser view' onclick='onUserChoose(this, this.checked)'/></td>"
-                            html += "<td>test</td>"
-                            html += "<td>test</td>"
-                            html += "</tr>";
-                        }
-                        e.html(e.html() + html);
-                        count++;
-                        // 结束下拉刷新 true 表示没有更多数据了
-                        miniRefresh.endUpLoading(count > 5);
+                        //console.log(parmas)
+
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            crossDomain: true,
+                            contentType: "application/json; charset=utf-8",
+                            data: JSON.stringify(parmas),
+                            beforeSend: function (req) {
+                                //  req.setRequestHeader("token", account.data.token);
+                            },
+                            success: function (data) {
+                                // 修改成功
+                                if (data.code == 1) {
+                                    $.each(data.result.transCard, function (index, content) {
+                                        html += "<tr>";
+                                        html +=
+                                            "<td><input type='checkbox' value='" + content.serialNumber + "' class='user-chooser view' onclick='onUserChoose(this, this.checked)' serialNumber='"+ content.serialNumber +"' money='" + content.worth + "'/></td>"
+                                        html += "<td>" + content.buyers[0].name + "</td>"
+                                        html += "<td>" + content.worth + "</td>"
+                                        html += "</tr>";
+                                    })
+                                    e.html(e.html() + html);
+
+                                    var m = $("#result-listdata")
+                                    html = ""
+                                    $.each(data.result.recommendTransCard, function (index, content) {
+                                        html = "<tr>";
+                                        html += "<input style='display:none;' value='" + content.serialNumber + "' class='user-chooser view'/>"
+                                        html += "<td>" + content.buyers[0].name + "</td>"
+                                        html += "<td>" + content.worth + "</td>"
+                                        html += "</tr>";
+                                    })
+                                    m.html(m.html() + html);
+                                    console.log(html)
+                                    //count++;
+                                    // 结束下拉刷新 true 表示没有更多数据了
+                                    miniRefresh.endUpLoading(true);
+                                    return;
+                                } else {
+                                    alert(data.message);
+                                }
+                            },
+                            error: function (data) {
+                                alert(JSON.stringify(data));
+                            }
+                        })
                     }, 200);
                 }
             }
@@ -163,10 +212,30 @@
     function onUserChoose(e, choose) {
         if (choose) {
             //选中的金额需要增加
+            matchMoney += parseInt($(e).attr("money"))
+            matchList.push($(e).attr("serialNumber"))
         } else {
             //选中的金额需要减少
+            matchMoney -= parseInt($(e).attr("money"))
         }
+        $("#chooseMoney").html(matchMoney)
     }
+
+    new Vue({
+        el: "#content",
+        data: {
+            matchWorth: getCookie("worth"),
+            serialNumber: getCookie("serialNumber")
+        },
+        methods: {
+            doSale: function () {
+                
+            },
+            autoListDoSale: function () {
+
+            }
+        }
+    })
 </script>
 
 </html>

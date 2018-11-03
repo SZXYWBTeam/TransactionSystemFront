@@ -7,6 +7,7 @@
     <script src="script/toolbar.js"></script>
     <script src="script/vue.js"></script>
     <script src="script/data/vuedata.js"></script>
+    <script src="script/utils.js"></script>
     <link href="css/base.css" rel="stylesheet" type="text/css" />
     <link href="css/sale.css" rel="stylesheet" type="text/css" />
 </head>
@@ -94,9 +95,10 @@
     new Vue({
         el: "#content",
         data: {
-            currency: parseInt(2),
-            rate: parseInt(account.wallet.rate),
-            isSale: true
+            currency: parseInt(0),
+            rate: parseInt(1),
+            isSale: true,
+            token: getCookie("token")
         },
         methods: {
             doSale: function () {
@@ -104,9 +106,9 @@
                 var parmas = {
                     currency: this.currency,
                     rate: this.rate,
-                    worth: this.currency * this.rate,
+                    worth: parseInt(this.currency * this.rate),
                     isSale: true,
-                    token: account.data.token
+                    token: this.token
                 };
 
                 console.log(url)
@@ -121,7 +123,12 @@
                         // 成功卖出
                         if (data.code == 1) {
                             alert("成功生成订单");
-                            // TODO 跳转到订单匹配界面
+                            // 跳转到订单匹配界面
+                            setCookie("currency", this.currency)
+                            setCookie("rate", this.rate)
+                            setCookie("worth", parseInt(this.currency * this.rate))
+                            setCookie("serialNumber", data.result.serialNumber)
+
                             return;
                         } else {
                             alert(data.message);
