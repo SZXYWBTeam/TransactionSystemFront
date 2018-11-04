@@ -71,10 +71,8 @@
         table.addPair("订单时间：", "20180201");
 
 
-        var url = webServer.data.baseURL + webServer.data.doSale
+        var url = webServer.data.baseURL + webServer.data.transInfo + "/" + getCookie("mineSerial")
         var parmas = {
-            mineSerial: getCookie("mineSerial"),
-            serials: getCookie("matchList").split(","),
             token: getCookie("token")
         };
         console.log(parmas)

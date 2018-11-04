@@ -68,10 +68,9 @@
         });
         table.addPair("订单时间：", "20180201");
 
-        var url = webServer.data.baseURL + webServer.data.doSale
+        // 进行匹配（修改匹配方和被匹配方的订单状态）
+        var url = webServer.data.baseURL + webServer.data.transInfo + "/" + getCookie("mineSerial")
         var parmas = {
-            mineSerial: getCookie("mineSerial"),
-            serials: getCookie("matchList").split(","),
             token: getCookie("token")
         };
         console.log(parmas)
@@ -83,7 +82,7 @@
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(parmas),
             success: function (data) {
-                // 修改成功
+                // 成功返回
                 if (data.code == 1) {
                     var buyderAccount = ''
                     var buyderInviter = ''

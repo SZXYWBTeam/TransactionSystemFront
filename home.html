@@ -59,7 +59,7 @@
                     </td>
                     <td class=" one-of-three" colspan="2">
                         <!-- 比率 -->
-                        比率：<span id="">{{showRate}}</span>
+                        比率：<span id="">{{showRate.toFixed(2)}}</span>
                         <!-- 价值 -->
                         价值：<span id="">{{parseInt(currency*showRate)}}</span>
                     </td>
@@ -303,16 +303,23 @@
                                     // 状态Formate
                                     switch (content.status) {
                                         case -1:
+                                            // 待匹配
                                             content.statusStr = "待匹配"
                                             break
-                                        case 0:
-                                            content.statusStr = "已匹配"
-                                            break;
                                         case 1:
+                                            // 已完成
                                             content.statusStr = "已完成"
                                             break;
-                                        case 2:
+                                        case 1001:
+                                            // 待支付
                                             content.statusStr = "待支付"
+                                        case 1002:
+                                            // 已支付
+                                            content.statusStr = "已支付"
+                                            break;
+                                        case 2001:
+                                            // 代收款
+                                            content.statusStr = "代收款"
                                             break;
                                     }
 
@@ -347,6 +354,7 @@
                 doMatch: function (index) {
                     var item = vue.transList[index]
                     setCookie("serialNumber", this.transList[index].serialNumber)
+                    setCookie("mineSerial", this.transList[index].serialNumber)
                     setCookie("currency", this.transList[index].currency)
                     setCookie("rate", this.transList[index].worth / this.transList[index].currency)
                     setCookie("worth", this.transList[index].worth)
@@ -360,7 +368,7 @@
                             // 已完成
                             href = "trade-done.html";
                             break;
-                        case 10001:
+                        case 1001:
                             // 待支付
                             href = "confirm-remit.html";
                         case 1002:
@@ -368,7 +376,7 @@
                             href = "confirm-remit.html";
                             break;
                         case 2001:
-                            // 已完成
+                            // 代收款
                             href = "confirm-receive.html";
                             break;
                     }

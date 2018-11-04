@@ -214,7 +214,7 @@
                                     pageIndex++;
 
                                     offsetHeight = $("#result-listdata").height();
-                                    $("#user-refresh-container").css("top", "calc(75rem + "+offsetHeight+"px)")
+                                    $("#user-refresh-container").css("top", "calc(75rem + " + offsetHeight + "px)")
                                     return;
                                 } else {
                                     alert(data.message);
@@ -245,7 +245,7 @@
         $("#chooseMoney").html(matchMoney)
     }
 
-    new Vue({
+    var vue = new Vue({
         el: "#content",
         data: {
             matchWorth: getCookie("worth"),
@@ -264,17 +264,48 @@
                 }
 
                 // 跳转到confirm-remit界面
-                window.location = "confirm-receive.html"
                 setCookie("matchList", matchList)
                 setCookie("mineSerial", this.serialNumber)
+                doMatch(matchList)
             },
             autoListDoSale: function () {
-                window.location = "confirm-receive.html"
                 setCookie("matchList", autoMatchList)
                 setCookie("mineSerial", this.serialNumber)
+                doMatch(autoMatchList)
             }
         }
     })
+
+    function doMatch(list) {
+        var url = webServer.data.baseURL + webServer.data.doMatch
+        var parmas = {
+            mineSerial: vue.serialNumber,
+            serials: list,
+            token: getCookie("token")
+        };
+
+        //console.log(parmas)
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            crossDomain: true,
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(parmas),
+            success: function (data) {
+                // 修改成功
+                if (data.code == 1) {
+                        window.location = "confirm-receive.html"
+
+                } else {
+                    alert(data.message);
+                }
+            },
+            error: function (data) {
+                alert(JSON.stringify(data));
+            }
+        })
+    }
 </script>
 
 </html>

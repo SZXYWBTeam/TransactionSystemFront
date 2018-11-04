@@ -12,7 +12,10 @@ var webServer = {
         match: "/bbc/wallet/match",
         trans: "/bbc/trans",
         doPay: "/bbc/trans/doPay",
-        doSale: "/bbc/trans/doSale"
+        doReceipt: "/bbc/trans/doReceipt",
+        doMatch: "/bbc/trans/doMatch",
+        doSale: "/bbc/trans/doSale",
+        transInfo: "/bbc/trans/info"
     }
 }
 
