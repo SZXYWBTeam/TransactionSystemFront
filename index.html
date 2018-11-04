@@ -45,7 +45,8 @@
                 <label class="view text-view login-label" for="ed-password">
                     密&nbsp;码:
                 </label>
-                <input id="ed-password" v-model="pwd" class="view edit-text-view login-ed-text" type="password" placeholder="请输入密码" />
+                <input id="ed-password" v-model="pwd" class="view edit-text-view login-ed-text" type="password"
+                    placeholder="请输入密码" />
             </div>
             <!-- 用户面输入框 结束 -->
 
@@ -63,7 +64,9 @@
                 </label>
                 <input id="ed-verifycode" v-model="verifycode" class="view edit-text-view login-ed-text" type="text"
                     placeholder="请输入验证码" />
-                <img id="send-code-button" class="vcode" :src="vcodeImg" @click="changeImg">
+                <span class="view" >
+                    <img id="send-code-button" class="vcode" :src="vcodeImg" @click="changeImg">
+                </span>
             </div>
             <!-- 验证码输入框 结束 -->
         </div>
@@ -145,11 +148,12 @@
                             setCookie("name", result.user.name)
                             setCookie("phone", result.user.phone)
                             setCookie("account", result.account)
-                            setCookie("zfbCode", result.zfbCode)
+                            setCookie("zfbCode", result.user.zfbCode)
+                            setCookie("inviteCode", result.user.inviteCode)
 
                             //console.log(account.data)
                             // 跳转到主界面
-                            window.location.href = "home.html";
+                            window.location.href = "nav.html";
                             return;
                         } else if (data.code == 4007) {
                             alert(logger.data.ERROR_VERCODE);

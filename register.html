@@ -2,10 +2,6 @@
 
 <head>
     <title>注册</title>
-    <script src="script/jquery.js"></script>
-    <script src="script/toolbar.js"></script>
-    <script src="script/vue.js"></script>
-    <script src="script/data/vuedata.js"></script>
     <link href="css/base.css" rel="stylesheet" type="text/css" />
     <link href="css/register.css" rel="stylesheet" type="text/css" />
 </head>
@@ -94,7 +90,7 @@
                 </label>
                 <input id="ed-verifycode" v-model="verCode" name="" class="view edit-text-view login-ed-text" type="text"
                     placeholder="请输入验证码" />
-                <span class="view" id="send-code-button">
+                <span class="view" >
                     <!-- 发送 -->
                     <img id="send-code-button" class="vcode" :src="vcodeImg" @click="changeImg">
                 </span>
@@ -114,6 +110,11 @@
         </div>
     </div>
 </body>
+<script src="script/jquery.js"></script>
+<script src="script/toolbar.js"></script>
+<script src="script/vue.js"></script>
+<script src="script/data/vuedata.js"></script>
+<script src="script/utils.js"></script>
 <script>
     $(function () {
         toolbar = new Toolbar("#toolbar-container");
@@ -173,10 +174,17 @@
 
                             account.data.account = result.account
                             account.data.token = result.token
+                            setCookie("token", result.token)
+                            setCookie("userId", result.user.id)
+                            setCookie("name", result.user.name)
+                            setCookie("phone", result.user.phone)
+                            setCookie("account", result.account)
+                            setCookie("zfbCode", result.user.zfbCode)
+                            setCookie("inviteCode", result.user.inviteCode)
                             console.log(account.data)
 
                             // 跳转到主界面
-                            window.location.href = "home.html";
+                            window.location.href = "nav.html";
                             return;
 
                         } else if (data.code == 4002) {

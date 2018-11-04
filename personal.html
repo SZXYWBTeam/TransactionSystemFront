@@ -7,6 +7,7 @@
     <script src="script/toolbar.js"></script>
     <script src="script/vue.js"></script>
     <script src="script/data/vuedata.js"></script>
+    <script src="script/utils.js"></script>
     <link href="css/personal.css" rel="stylesheet" type="text/css" />
     <link href="css/base.css" rel="stylesheet" type="text/css" />
 </head>
@@ -81,13 +82,13 @@
         });
     });
 
-    new Vue({
+    var vue = new Vue({
         el: "#content",
         data: {
-            phone: account.data.phone,
-            name: account.data.name,
-            zfbCode: account.data.zfbCode,
-        },
+            phone: getCookie("phone"),
+            name: getCookie("name"),
+            zfbCode: getCookie("zfbCode"),
+        }, 
         methods: {
             updateSubmit: function () {
                 var url = webServer.data.baseURL + webServer.data.updateInfo
@@ -95,7 +96,7 @@
                     phone: this.phone,
                     name: this.name,
                     zfbCode: this.zfbCode,
-                    token: account.data.token
+                    token: getCookie("token")
                 };
 
                 $.ajax({
@@ -107,6 +108,9 @@
                     success: function (data) {
                         // 修改成功
                         if (data.code == 1) {
+                            setCookie("phone", vue.phone)
+                            setCookie("name", vue.name)
+                            setCookie("zfbCode", vue.zfbCode)
                             alert("修改成功");
                             return;
                         } else {

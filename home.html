@@ -76,7 +76,7 @@
                 <tr class="text-view view">
                     <td class="one-of-three">
                         <!-- 推广链接 -->
-                        <a id="">推广链接</a>
+                        <a id="" @click="showInvide">推广链接</a>
                     </td>
                     <td class="one-of-three" colspan="2">
                         <!-- 比率 -->
@@ -230,6 +230,7 @@
                 inviteCount: '',
                 currency: '',
                 buyCount: '',
+                inviteCode: getCookie("inviteCode"),
                 token: getCookie("token"),
                 transList: []
             },
@@ -285,7 +286,7 @@
                 },
                 // 获取本用户交易记录
                 getTransList: function () {
-                    var url = webServer.data.baseURL + webServer.data.trans + "/0/5"
+                    var url = webServer.data.baseURL + webServer.data.trans + "/0/10"
                     var parmas = {
                         token: this.token
                     };
@@ -345,14 +346,19 @@
                     location.href = "buy.html"
                 },
                 doMatch: function (index) {
-                    if (this.transList[index].status != '待匹配')
+                    var item = vue.transList[index]
+                    if (this.transList[index].status != '待匹配'
+                        || !(item.sellers != null && item.sellers[0].id == vue.userId))
                         return
 
                     setCookie("serialNumber", this.transList[index].serialNumber)
                     setCookie("currency", this.transList[index].currency)
-                    setCookie("rate", this.transList[index].worth /this.transList[index].currency)
+                    setCookie("rate", this.transList[index].worth / this.transList[index].currency)
                     setCookie("worth", this.transList[index].worth)
                     location.href = "match-list.html"
+                },
+                showInvide: function () {
+                    alert("邀请码：" + this.inviteCode)
                 }
             }
         })

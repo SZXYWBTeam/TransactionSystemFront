@@ -113,6 +113,10 @@
 <script>
     var matchMoney = 0
     var matchList = []
+    var autoMatchList = []
+    var pageIndex = 0;
+    var pageSize = 10;
+    var autoMatchHeight = 0;
 
     $(function () {
         count = 0;
@@ -128,13 +132,10 @@
             container: '#user-refresh-container',
             down: { //下拉刷新
                 callback: function () {
-                    //模拟ajax
-                    setTimeout(function () {
-
-                        $("#user-listdata").html("");
-                        // 结束下拉刷新
-                        miniRefresh.endDownLoading(true);
-                    }, 200);
+                    pageIndex = 0;
+                    $("#user-listdata").html("");
+                    // 结束下拉刷新
+                    miniRefresh.endDownLoading(true);
                 }
             },
             up: { //上拉加载
@@ -143,7 +144,7 @@
                     setTimeout(function () {
                         e = $("#user-listdata");
                         var html = "";
-                        var url = webServer.data.baseURL + webServer.data.match;
+                        var url = webServer.data.baseURL + webServer.data.match + "/" + pageIndex + "/" + pageSize;
                         var parmas = {
                             currency: getCookie("currency"),
                             rate: getCookie("rate"),
@@ -166,6 +167,10 @@
                             success: function (data) {
                                 // 修改成功
                                 if (data.code == 1) {
+                                    if (data.result == null) {
+                                        miniRefresh.endUpLoading(true);
+                                        return
+                                    }
                                     $.each(data.result.transCard, function (
                                         index, content) {
                                         html += "<tr>";
@@ -186,9 +191,11 @@
 
                                     var m = $("#result-listdata")
                                     html = ""
+                                    autoMatchList = []
                                     $.each(data.result.recommendTransCard,
                                         function (index, content) {
-                                            html = "<tr>";
+                                            autoMatchList.push(content.serialNumber)
+                                            html += "<tr>";
                                             html +=
                                                 "<input style='display:none;' value='" +
                                                 content.serialNumber +
@@ -199,11 +206,15 @@
                                                 "</td>"
                                             html += "</tr>";
                                         })
-                                    m.html(m.html() + html);
+                                    m.html(html);
                                     console.log(html)
                                     //count++;
                                     // 结束下拉刷新 true 表示没有更多数据了
-                                    miniRefresh.endUpLoading(true);
+                                    miniRefresh.endUpLoading(data.result.transCard.length < pageSize);
+                                    pageIndex++;
+
+                                    offsetHeight = $("#result-listdata").height();
+                                    $("#user-refresh-container").css("top", "calc(75rem + "+offsetHeight+"px)")
                                     return;
                                 } else {
                                     alert(data.message);
@@ -219,7 +230,7 @@
         });
     });
 
-    var y = $("#manual-match-title").position().top ;
+    var y = $("#manual-match-title").position().top;
     /**
      * 选择中用户的回调
      */
@@ -246,10 +257,21 @@
                 $(".user-chooser:checked").each(function () {
                     matchList.push($(this).attr("serialNumber"))
                 });
-                alert(matchList);
+                console.log(matchList);
+                if (matchList.length == 0 || matchMoney != this.matchWorth) {
+                    alert("选择项不正确")
+                    return;
+                }
+
+                // 跳转到confirm-remit界面
+                window.location = "confirm-receive.html"
+                setCookie("matchList", matchList)
+                setCookie("mineSerial", this.serialNumber)
             },
             autoListDoSale: function () {
-
+                window.location = "confirm-receive.html"
+                setCookie("matchList", autoMatchList)
+                setCookie("mineSerial", this.serialNumber)
             }
         }
     })

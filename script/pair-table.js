@@ -40,7 +40,11 @@ function PairTable(containerSelector) {
         this.refresh();
     };
 
-    this.tdVal = function (key) {
-        return this.pairCache[key];
+    this.tdVal = function (key, value) {
+        td = this.pairCache[key] ;
+        if(value != null){
+            td.html(value) ;
+        }
+        return td;
     }
 }

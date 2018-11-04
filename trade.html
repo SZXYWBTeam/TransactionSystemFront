@@ -45,7 +45,7 @@
                         <td>状态</td>
                     </thead>
                     <!-- 数据列表显示的位置 -->
-                    <tbody id="listdata">
+                    <tbody id="trade-listdata">
                     </tbody>
                 </table>
             </div>
@@ -55,49 +55,134 @@
 </body>
 <script src="script/jquery.js"></script>
 <script src="script/toolbar.js"></script>
+<script src="script/vue.js"></script>
+<script src="script/data/vuedata.js"></script>
 <script src="script/minirefresh.js"></script>
-<script src="script/minirefresh.js"></script>
+<script src="script/utils.js"></script>
 <script>
     $(function () {
-        toolbar = new Toolbar("#toolbar-container");
-        toolbar.title.html("交易记录");
-        toolbar.backButton.hide();
+
+    });
+    toolbar = new Toolbar("#toolbar-container");
+    toolbar.title.html("交易记录");
+    toolbar.backButton.hide();
 
 
-        //创建下拉刷新对象
-        var miniRefresh = new MiniRefresh({
-            container: '#minirefresh',
-            down: { //下拉刷新
-                callback: function () {
-                    //模拟ajax
-                    setTimeout(function () {
+    //创建下拉刷新对象
+    var miniRefresh = new MiniRefresh({
+        container: '#minirefresh',
+        down: { //下拉刷新
+            callback: function () {
+                pageIndex = 0;
+                getTransList();
+            }
+        },
+        up: { //上拉加载
+            callback: function () {
+                getTransList();
+            }
+        }
+    })
 
-                        $("#listdata").html("");
-                        // 结束下拉刷新
+
+    var pageIndex = 0;
+    var pageSize = 10;
+    var transList = [];
+    var userId = getCookie("userId");
+
+
+    function getTransList() {
+        var url = webServer.data.baseURL + webServer.data.trans + "/" + pageIndex + "/" + pageSize
+        var parmas = {
+            token: getCookie("token")
+        };
+
+        if (pageIndex == 0) {
+            transList = [];
+        }
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            crossDomain: true,
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(parmas),
+            success: function (data) {
+                // 修改成功
+                if (data.code == 1) {
+                    if (pageIndex == 0) {
+                        $("#trade-listdata").html("");
+                    }
+                    html = $("#trade-listdata").html();
+                    $.each(data.result, function (index, content) {
+                        // 状态Formate
+                        switch (content.status) {
+                            case -1:
+                                content.status = "待匹配"
+                                break
+                            case 0:
+                                content.status = "已匹配"
+                                break;
+                            case 1:
+                                content.status = "已完成"
+                                break;
+                            case 2:
+                                content.status = "待支付"
+                                break;
+                        }
+
+                        // 时间转换
+                        var date = new Date(content.updateAt)
+                        content.updateAt = date.getFullYear() + ""
+                            + dataLeftCompleting(2, "0", date.getMonth())
+                            + dataLeftCompleting(2, "0", date.getDate())
+                    
+
+                        html += "<tr onclick='doMatch("+transList.length+")'>";
+                        html += "<td>" + content.serialNumber + "</td>";
+                        html += "<td>" + content.worth + "</td>";
+                        html += "<td>" + content.updateAt + "</td>";
+                        html += "<td>" + ((content.sellers != null && content.sellers[0].id == userId) ? "卖出" : "买入") + "</td>";
+                        html += "<td>" + content.status + "</td>";
+                        html += "</tr>";
+                        transList.push(content)
+                    })
+
+                    $("#trade-listdata").html(html);
+
+
+                    if (pageIndex == 0) {
                         miniRefresh.endDownLoading(true);
-                    }, 200);
+                    } else {
+                        miniRefresh.endUpLoading(data.result.length < pageSize);
+                    }
+                    pageIndex++;
+                    return;
+                } else {
+                    alert(data.message);
                 }
             },
-            up: { //上拉加载
-                callback: function () {
-                    //模拟ajax
-                    setTimeout(function () {
-                        e = $("#listdata");
-                        content = "";
-
-                        for (i = 0; i < 5; i++) {
-                            content +=
-                                "<tr><td>test</td><td>test</td><td>test</td><td>test</td><td>test</td></tr>"
-                        }
-                        e.html(e.html() + content);
-
-                        // 结束下拉刷新 true 表示没有更多数据了
-                        miniRefresh.endUpLoading(false);
-                    }, 200);
-                }
+            error: function (data) {
+                alert(JSON.stringify(data));
             }
-        });
-    });
+        })
+    }
+
+    function doMatch(index) {
+        this.transList = transList ;
+        var item = transList[index]
+        if (this.transList[index].status != '待匹配'
+            || !(item.sellers != null && item.sellers[0].id == userId))
+            return
+
+        setCookie("serialNumber", this.transList[index].serialNumber)
+        setCookie("currency", this.transList[index].currency)
+        setCookie("rate", this.transList[index].worth / this.transList[index].currency)
+        setCookie("worth", this.transList[index].worth)
+        location.href = "match-list.html"
+    }
+
+
 </script>
 
 </html>

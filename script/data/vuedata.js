@@ -10,7 +10,9 @@ var webServer = {
         sale: "/bbc/wallet/sale",
         buy: "/bbc/wallet/buy",
         match: "/bbc/wallet/match",
-        trans: "/bbc/trans"
+        trans: "/bbc/trans",
+        doPay: "/bbc/trans/doPay",
+        doSale: "/bbc/trans/doSale"
     }
 }
 

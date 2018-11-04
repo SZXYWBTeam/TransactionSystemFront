@@ -23,7 +23,7 @@
             </div>
 
             <div class="gravity-center">
-                <span class="view text-view button oneline-button" id="confirm-button">
+                <span class="view text-view button oneline-button" id="confirm-button" onclick="doReceipt()">
                     确认收款
                 </span>
             </div>
@@ -33,9 +33,6 @@
                     请仔细核对是否到账，一旦确认将很难追回！
                 </span>
             </div>
-
-            <input type="file" name="" id="">
-
         </div>
 
     </div>
@@ -45,6 +42,9 @@
 <script src="script/pair-table.js"></script>
 <script src="script/toolbar.js"></script>
 <script src="script/dialog.js"></script>
+<script src="script/vue.js"></script>
+<script src="script/data/vuedata.js"></script>
+<script src="script/utils.js"></script>
 <script>
     $(function () {
         toolbar = new Toolbar("#toolbar-container");
@@ -67,14 +67,53 @@
             "打款截图：": "<span onclick='showImg()'>查看</span>",
         });
         table.addPair("订单时间：", "20180201");
-        // table.tdVal("卖家账号：").css("color", "red");
-        table.tdVal("卖家账号：").matching(true);
-        table.tdVal("支 付 宝：").matching(true);
-        table.tdVal("卖家上家：").matching(true);
-        table.tdVal("卖家电话：").matching(true);
-        table.tdVal("打款截图：").matching(false);
 
-
+        var url = webServer.data.baseURL + webServer.data.doSale
+        var parmas = {
+            mineSerial: getCookie("mineSerial"),
+            serials: getCookie("matchList").split(","),
+            token: getCookie("token")
+        };
+        console.log(parmas)
+        console.log(url)
+        $.ajax({
+            type: "POST",
+            url: url,
+            crossDomain: true,
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(parmas),
+            success: function (data) {
+                // 修改成功
+                if (data.code == 1) {
+                    var buyderAccount = ''
+                    var buyderInviter = ''
+                    var buyderPhone = ''
+                    $.each(data.result.buyers, function (index, content) {
+                        buyderAccount += content.account + " "
+                        buyderInviter += content.inviterAccount == null
+                            ? '无' : content.inviterAccount + " "
+                        buyderPhone += content.phone + " "
+                    })
+                    table.tdVal("订单编号：", data.result.serialNumber);
+                    table.tdVal("买家账号：", buyderAccount);
+                    table.tdVal("买家上家：", buyderInviter);
+                    table.tdVal("买家电话：", buyderPhone);
+                    table.tdVal("买入数量：", data.result.currency);
+                    table.tdVal("现价金额：", data.result.worth);
+                    table.tdVal("卖家账号：", data.result.sellers[0].account);
+                    table.tdVal("支 付 宝：", data.result.sellers[0].zfbCode);
+                    table.tdVal("卖家上家：", data.result.sellers[0].inviterAccount == null
+                        ? '无' : data.result.sellers[0].inviterAccount);
+                    table.tdVal("卖家电话：", data.result.sellers[0].phone);
+                    return;
+                } else {
+                    alert(data.message);
+                }
+            },
+            error: function (data) {
+                alert(JSON.stringify(data));
+            }
+        })
     });
 
     //打款截图显示在对话框中
@@ -88,6 +127,10 @@
             alert(123);
             event.stopPropagation();
         });
+    }
+
+    function doReceipt() {
+
     }
 </script>
 
