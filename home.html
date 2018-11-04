@@ -176,7 +176,7 @@
                             <td>{{item.updateAt}}</td>
                             <td v-if="item.sellers!=null && item.sellers[0].id==userId">卖出</td>
                             <td v-else>买入</td>
-                            <td>{{item.status}}</td>
+                            <td>{{item.statusStr}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -265,8 +265,7 @@
                                     vue.showRate = data.result.hideRate
                                     account.wallet.showRate = data.result.hideRate
                                     setCookie("showRate", data.result.hideRate)
-                                }
-                                else {
+                                } else {
                                     vue.showRate = data.result.rate
                                     account.wallet.showRate = data.result.rate
                                     setCookie("showRate", data.result.rate)
@@ -304,24 +303,24 @@
                                     // 状态Formate
                                     switch (content.status) {
                                         case -1:
-                                            content.status = "待匹配"
+                                            content.statusStr = "待匹配"
                                             break
                                         case 0:
-                                            content.status = "已匹配"
+                                            content.statusStr = "已匹配"
                                             break;
                                         case 1:
-                                            content.status = "已完成"
+                                            content.statusStr = "已完成"
                                             break;
                                         case 2:
-                                            content.status = "待支付"
+                                            content.statusStr = "待支付"
                                             break;
                                     }
 
                                     // 时间转换
                                     var date = new Date(content.updateAt)
-                                    content.updateAt = date.getFullYear() + ""
-                                        + dataLeftCompleting(2, "0", date.getMonth())
-                                        + dataLeftCompleting(2, "0", date.getDate())
+                                    content.updateAt = date.getFullYear() + "" +
+                                        dataLeftCompleting(2, "0", date.getMonth()) +
+                                        dataLeftCompleting(2, "0", date.getDate())
                                     vue.transList.push(content)
                                 })
 
@@ -347,15 +346,35 @@
                 },
                 doMatch: function (index) {
                     var item = vue.transList[index]
-                    if (this.transList[index].status != '待匹配'
-                        || !(item.sellers != null && item.sellers[0].id == vue.userId))
-                        return
-
                     setCookie("serialNumber", this.transList[index].serialNumber)
                     setCookie("currency", this.transList[index].currency)
                     setCookie("rate", this.transList[index].worth / this.transList[index].currency)
                     setCookie("worth", this.transList[index].worth)
-                    location.href = "match-list.html"
+                    href = "#";
+                    switch (item.status) {
+                        case -1:
+                            // 待匹配
+                            href = "match-list.html";
+                            break
+                        case 1:
+                            // 已完成
+                            href = "trade-done.html";
+                            break;
+                        case 10001:
+                            // 待支付
+                            href = "confirm-remit.html";
+                        case 1002:
+                            // 已支付
+                            href = "confirm-remit.html";
+                            break;
+                        case 2001:
+                            // 已完成
+                            href = "confirm-receive.html";
+                            break;
+                    }
+
+
+                    location.href = href;
                 },
                 showInvide: function () {
                     alert("邀请码：" + this.inviteCode)
@@ -363,7 +382,6 @@
             }
         })
     })
-
 </script>
 
 </html>
