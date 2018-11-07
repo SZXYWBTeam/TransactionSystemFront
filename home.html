@@ -219,7 +219,6 @@
             mounted() {
                 this.getWallet()
                 this.getTransList()
-                console.log(getCookie("name"))
             },
             data: {
                 userId: getCookie("userId"),
@@ -313,6 +312,7 @@
                                         case 1001:
                                             // 待支付
                                             content.statusStr = "待支付"
+                                            break;
                                         case 1002:
                                             // 已支付
                                             content.statusStr = "已支付"
@@ -380,8 +380,6 @@
                             href = "confirm-receive.html";
                             break;
                     }
-
-
                     location.href = href;
                 },
                 showInvide: function () {

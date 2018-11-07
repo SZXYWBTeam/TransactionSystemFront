@@ -10,28 +10,36 @@
     <link href="css/toolbar.css" rel="stylesheet" type="text/css" />
     <link href="css/confirm-receive.css" rel="stylesheet" type="text/css" />
     <link href="css/pair-table.css" rel="stylesheet" type="text/css" />
+    <link href="css/dialog.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
-    <nav id="toolbar-container">
-    </nav>
-    <div class="view-parent gravity-vertical">
-        <div class="view-parent pair-table-container" id="table-container">
+    <div id="dialog-container">
+        <nav id="toolbar-container">
+        </nav>
+        <div class="view-parent gravity-vertical">
+            <div class="view-parent pair-table-container" id="table-container">
+
+            </div>
+
+            <div class="gravity-center">
+                <span class="view text-view button oneline-button" id="confirm-button" onclick="back()">
+                    返回
+                </span>
+            </div>
 
         </div>
-
-        <div class="gravity-center">
-            <span class="view text-view button oneline-button" id="confirm-button">
-                返回
-            </span>
-        </div>
-
     </div>
 </body>
 <script src="script/jquery.js"></script>
 <script src="script/pair-table.js"></script>
 <script src="script/toolbar.js"></script>
+<script src="script/data/vuedata.js"></script>
+<script src="script/dialog.js"></script>
+<script src="script/utils.js"></script>
+<script src="script/inject-trans.js"></script>
 <script>
+    var toolbar;
     $(function () {
         toolbar = new Toolbar("#toolbar-container");
         toolbar.title.html("已完成");
@@ -40,28 +48,28 @@
         });
 
         table = new PairTable("#table-container");
-        table.setPairs({
-            "订单编号：": "XI2298",
-            "买家账号：": "KD3232",
-            "买家上家：": "138293827",
-            "买家电话：": "1356245212",
-            "买入数量：": "2398232",
-            "现价金额：": "20000",
-            "卖家账号：": "匹配中",
-            "支 付 宝：": "匹配中",
-            "卖家上家：": "匹配中",
-            "卖家电话：": "匹配中",
-            "打款截图：": "<span>查看</span>",
-        });
-        table.addPair("订单时间：", "20180201");
-        // table.tdVal("卖家账号：").css("color", "red");
-        table.tdVal("卖家账号：").matching(true);
-        table.tdVal("支 付 宝：").matching(true);
-        table.tdVal("卖家上家：").matching(true);
-        table.tdVal("卖家电话：").matching(true);
-        table.tdVal("打款截图：").matching(false);
-
+        autoInjector = new AutoInjector();
+        autoInjector.bindPairTable(table);
+        table.tdVal("打款截图：", "<span onclick='showImg()'>查看</span>");
+        autoInjector.autoInject();
     });
+
+    //打款截图显示在对话框中
+    dialog = new Dialog("#dialog-container");
+
+    function showImg(src) {
+        dialog.show(
+            "<div id='test' class='view-parent card-view' style='background-color:#fff' onclick='test();'>test</div>"
+        );
+        $("#test").click(function (event) {
+            alert(123);
+            event.stopPropagation();
+        });
+    }
+
+    function back() {
+        toolbar.backButton.click();
+    }
 </script>
 
 </html>

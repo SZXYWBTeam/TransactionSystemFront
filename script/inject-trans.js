@@ -1,10 +1,9 @@
 // 信息注入
 function AutoInjector() {
     // 请求地址
-    this.queryUrl = webServer.data.baseURL + webServer.data.doSale;
+    this.queryUrl = webServer.data.baseURL + webServer.data.transInfo + "/" + getCookie("mineSerial");
+
     this.queryParams = {
-        mineSerial: getCookie("mineSerial"),
-        serials: getCookie("matchList").split(","),
         token: getCookie("token")
     };
     this.pairTable = null;
@@ -37,12 +36,11 @@ function AutoInjector() {
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(this_injector.queryParams),
             success: function (data) {
-                // 修改成功
+                // 成功返回
                 if (data.code == 1) {
                     var buyderAccount = ''
                     var buyderInviter = ''
                     var buyderPhone = ''
-                    table = this_injector.pairTable;
                     $.each(data.result.buyers, function (index, content) {
                         buyderAccount += content.account + " "
                         buyderInviter += content.inviterAccount == null ?
@@ -60,8 +58,9 @@ function AutoInjector() {
                     table.tdVal("卖家上家：", data.result.sellers[0].inviterAccount == null ?
                         '无' : data.result.sellers[0].inviterAccount);
                     table.tdVal("卖家电话：", data.result.sellers[0].phone);
+                    table.tdVal("订单时间：", new Date(data.result.updateAt).Format("yyyyMMdd"));
                     if (callback != null) {
-                        callback(this_injector);
+                        callback(table);
                     }
                     return;
                 } else {
