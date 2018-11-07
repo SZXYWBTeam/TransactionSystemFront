@@ -1,10 +1,9 @@
-
 /**
-* 可扩充的解决方案
-* @param bits 格式化位数
-* @param identifier 补全字符
-* @param value 值
-*/
+ * 可扩充的解决方案
+ * @param bits 格式化位数
+ * @param identifier 补全字符
+ * @param value 值
+ */
 function dataLeftCompleting(bits, identifier, value) {
     value = identifier.repeat(bits) + value;
     return value.slice(-bits);
@@ -35,7 +34,7 @@ function delCookie(name) {
 }
 
 Date.prototype.Format = function (fmt) { //author: meizz   
-    var o = {  
+    var o = {
         "M+": this.getMonth() + 1, //月份   
         "d+": this.getDate(), //日   
         "H+": this.getHours(), //小时   
@@ -43,10 +42,9 @@ Date.prototype.Format = function (fmt) { //author: meizz
         "s+": this.getSeconds(), //秒   
         "q+": Math.floor((this.getMonth() + 3) / 3), //季度   
         "S": this.getMilliseconds() //毫秒   
-    };  
-    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));  
-    for (var k in o)  
-    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));  
-    return fmt;  
-}  
-
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+}
