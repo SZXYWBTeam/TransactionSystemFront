@@ -15,7 +15,9 @@ var webServer = {
         doReceipt: "/bbc/trans/doReceipt",
         doMatch: "/bbc/trans/doMatch",
         doSale: "/bbc/trans/doSale",
-        transInfo: "/bbc/trans/info"
+        transInfo: "/bbc/trans/info",
+        imgUpload: "/imgUpload",
+        imgShow: "/imgShow"
     }
 }
 

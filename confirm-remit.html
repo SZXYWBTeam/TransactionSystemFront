@@ -63,15 +63,40 @@
     });
 
     $("#file-input").change(function () {
-        picName = getFileName($("#file-input").val()) ;
+        picName = getFileName($("#file-input").val());
         $("#upload-button").html(picName);
         //上传图片
-        alert(picName) ;
+        alert(picName);
         uploadForm();
     });
 
-    function uploadForm(){
-        //
+    function uploadForm() {
+        var url = webServer.data.baseURL + webServer.data.imgUpload
+        var formData = new FormData();//使用formData来上传数据
+        //content-Type是form-data类型
+        formData.append("file", $("#file-input")[0].files[0])//取file类型input中的文件
+        formData.append("token", getCookie("token"))
+        formData.append("mineSerial", getCookie("mineSerial"))
+
+        $.ajax({
+            method: "POST",
+            url: url,
+            timeout: 10000, //超时时间设置单位毫秒
+            crossDomain: true,
+            async: false,
+            dataType: "json",
+            data: formData,
+            contentType: false,//
+            processData: false,//数据不做预处理
+            success: function (response) {
+                alert(response.msg);
+                return;
+            },
+            error: function (e) {
+                alert(e.msg);
+                return;
+            }
+        });
     }
 
     function getFileName(file) { //通过第一种方式获取文件名
