@@ -9,9 +9,12 @@
     <link href="css/minirefresh.css" rel="stylesheet" type="text/css" />
     <link href="css/minirefresh-common.css" rel="stylesheet" type="text/css" />
     <link href="css/table.css" rel="stylesheet" type="text/css" />
+    <link href="css/dialog.css" rel="stylesheet" type="text/css" />
+    <link href="css/pair-table.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
+    <div id="dialog-container">
     <div id="toolbar-container">
     </div>
     <!--content-->
@@ -130,13 +133,18 @@
                 <table class="table-detail">
                     <thead>
                         <td>编号</td>
-                        <td>金额</td>
-                        <td>时间</td>
-                        <td>流向</td>
-                        <td>状态</td>
+                        <td>会员</td>
+                        <td>提成</td>
+                        <td>查看</td>
                     </thead>
                     <!-- 数据列表显示的位置 -->
                     <tbody id="commission-listdata">
+                            <tr v-for="(item, index) of commissionList" @click="showCommissionDetails(item)">
+                                    <td><a>{{item.serialNumber}}</a></td>
+                                    <td>{{item.UserName}}</td>
+                                    <td>{{item.money}}</td>
+                                    <td><a>查看</a></td>
+                            </tr>
                     </tbody>
                 </table>
             </div>
@@ -184,6 +192,7 @@
         </div>
         <!-- 交易记录end -->
     </div>
+    </div>
 </body>
 <script src="script/jquery.js"></script>
 <script src="script/toolbar.js"></script>
@@ -192,33 +201,35 @@
 <script src="script/minirefresh.js"></script>
 <script src="script/minirefresh.js"></script>
 <script src="script/utils.js"></script>
+<script src="script/dialog.js"></script>
+<script src="script/pair-table.js"></script>
 <script>
+    var dialog ;
+
+    function showCommissionDetails(item){
+        var html = "<div class='view-parent gravity-vertical card-view'> <div class='view-parent pair-table-container' id='table-container'></div></div>" ;
+        dialog.show(html) ;
+        var table = new PairTable("#table-container");
+        table.setPairs({
+            "编号：":item.serialNumber,
+            "会员：":item.UserName,
+            "提成：":item.money,
+        }) ;
+    };
+    var listPageIndex = 0;
+    var listPageSize = 5;
     $(function () {
         toolbar = new Toolbar("#toolbar-container");
         toolbar.title.html("主页");
         toolbar.backButton.hide();
 
-        e = $("#commission-listdata");
-        content = "";
-        for (i = 0; i < 5; i++) {
-            content +=
-                "<tr><td>test</td><td>test</td><td>test</td><td>test</td><td>test</td></tr>"
-        }
-        e.html(e.html() + content);
-
-        e = $("#trade-listdata");
-        content = "";
-        /*for (i = 0; i < 10; i++) {
-            content +=
-                "<tr><td>test</td><td>test</td><td>test</td><td>test</td><td>test</td></tr>"
-        }
-        e.html(e.html() + content);*/
-
+        dialog = new Dialog("#dialog-container") ;
         var vue = new Vue({
             el: "#content",
             mounted() {
-                this.getWallet()
-                this.getTransList()
+                this.getWallet();
+                this.getTransList();
+                this.getCommissionRecordList();
             },
             data: {
                 userId: getCookie("userId"),
@@ -231,7 +242,8 @@
                 buyCount: '',
                 inviteCode: getCookie("inviteCode"),
                 token: getCookie("token"),
-                transList: []
+                transList: [],
+                commissionList:[],
             },
             methods: {
                 // 获取本用户钱包信息
@@ -260,6 +272,7 @@
                                 vue.hideRate = data.result.hideRate
                                 vue.inviteCount = data.result.inviteCount
                                 vue.currency = data.result.currency
+                                setCookie("showCurrency", vue.currency);
                                 if (data.result.rate == 0) {
                                     vue.showRate = data.result.hideRate
                                     account.wallet.showRate = data.result.hideRate
@@ -284,11 +297,10 @@
                 },
                 // 获取本用户交易记录
                 getTransList: function () {
-                    var url = webServer.data.baseURL + webServer.data.trans + "/0/10"
+                    var url = webServer.data.baseURL + webServer.data.trans + "/0/" + listPageSize;
                     var parmas = {
                         token: this.token
                     };
-
                     $.ajax({
                         type: "POST",
                         url: url,
@@ -322,7 +334,6 @@
                                             content.statusStr = "代收款"
                                             break;
                                     }
-
                                     // 时间转换
                                     var date = new Date(content.updateAt)
                                     content.updateAt = date.getFullYear() + "" +
@@ -330,8 +341,38 @@
                                         dataLeftCompleting(2, "0", date.getDate())
                                     vue.transList.push(content)
                                 })
-
-                                //console.log(vue.transList)
+                                return;
+                            } else {
+                                alert(data.message);
+                            }
+                        },
+                        error: function (data) {
+                            alert(JSON.stringify(data));
+                        }
+                    })
+                },
+                getCommissionRecordList: function () {
+                    var url = webServer.data.baseURL + webServer.data.list  + "/" + listPageIndex +
+                        "/" + listPageSize;
+                    var parmas = {
+                        token: this.token
+                    };
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        crossDomain: true,
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(parmas),
+                        success: function (data) {
+                            // 修改成功
+                            if (data.code == 1) {
+                                if(listPageIndex == 0){
+                                    vue.commissionList.length = 0 ;
+                                }
+                                $.each(data.result, function (index, e) {
+                                    vue.commissionList.push(e);
+                                });
+                                listPageIndex++;
                                 return;
                             } else {
                                 alert(data.message);

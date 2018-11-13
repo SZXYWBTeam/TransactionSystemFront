@@ -16,8 +16,10 @@ var webServer = {
         doMatch: "/bbc/trans/doMatch",
         doSale: "/bbc/trans/doSale",
         transInfo: "/bbc/trans/info",
+        withdraw:"/bbc/money/withdraw",//佣金提现
+        list:"/bbc/money/list",//佣金提现
         imgUpload: "/imgUpload",
-        imgShow: "/imgShow"
+        imgShow: "/imgShow",
     }
 }
 

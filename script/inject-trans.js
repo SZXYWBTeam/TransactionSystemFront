@@ -42,10 +42,10 @@ function AutoInjector() {
                     var buyderInviter = ''
                     var buyderPhone = ''
                     $.each(data.result.buyers, function (index, content) {
-                        buyderAccount += content.account + " "
-                        buyderInviter += content.inviterAccount == null ?
-                            '无' : content.inviterAccount + " "
-                        buyderPhone += content.phone + " "
+                        buyderAccount += content.account + "<br />"
+                        buyderInviter += (content.inviterAccount == null ?
+                            '无' : content.inviterAccount) + "<br /> "
+                        buyderPhone += content.phone + "<br />"
                     })
                     table.tdVal("订单编号：", data.result.serialNumber);
                     table.tdVal("买家账号：", buyderAccount);

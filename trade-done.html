@@ -58,13 +58,32 @@
     dialog = new Dialog("#dialog-container");
 
     function showImg(src) {
-        dialog.show(
-            "<div id='test' class='view-parent card-view' style='background-color:#fff' onclick='test();'>test</div>"
-        );
-        $("#test").click(function (event) {
-            alert(123);
-            event.stopPropagation();
-        });
+        var url = webServer.data.baseURL + webServer.data.imgShow
+        var parmas = {
+            token: getCookie("token")
+        };
+        $.ajax({
+            type: "POST",
+            url: url,
+            crossDomain: true,
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(parmas),
+            success: function (data) {
+                // 修改成功
+                var imgs = data.split('&&&')
+                var html = "<ul>";
+                $.each(imgs, function (key, val) {
+                    html +=
+                        "<li class='view-parent card-view pay-cut'><img src='data:image/png;base64," +
+                        val + "'/></li>";
+                });
+                html += "</ul>"
+                dialog.show(html);
+            },
+            error: function (data) {
+                alert(JSON.stringify(data));
+            }
+        })
     }
 
     function back() {

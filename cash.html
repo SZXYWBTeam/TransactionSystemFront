@@ -3,8 +3,6 @@
 
 <head>
     <title>提现</title>
-    <script src="script/jquery.js"></script>
-    <script src="script/toolbar.js"></script>
     <link href="css/base.css" rel="stylesheet" type="text/css" />
 </head>
 
@@ -14,7 +12,25 @@
     <div id="content">
         <div class="view-parent card-view gravity-vertical input-form" id="">
 
-            <!-- 旧密码输入框 开始 -->
+
+            <!-- 币数量输入框 开始 -->
+            <div class="input-form-line gravity-center">
+                <span class="view ">
+                    <img src="img/money.png">
+                </span>
+                <label class="view text-view login-label" for="ed-coin">
+                    币&nbsp;额:
+                </label>
+                <input id="ed-coin" class="view edit-text-view login-ed-text" type="text" placeholder="请输入交易货币数量"
+                    oninput="changeCoin(this)" />
+            </div>
+            <!-- 币数输入框 结束 -->
+
+            <!-- 水平分割线 -->
+            <div class="input-form-line horizontal-line"></div>
+            <!-- 水平分割线 -->
+
+            <!-- 金额输入框 开始 -->
             <div class="input-form-line gravity-center">
                 <span class="view ">
                     <img src="img/money.png">
@@ -22,9 +38,9 @@
                 <label class="view text-view login-label" for="ed-money">
                     金&nbsp;额:
                 </label>
-                <input id="ed-money" class="view edit-text-view login-ed-text" type="text" placeholder="请输入金额" />
+                <input id="ed-money" class="view edit-text-view login-ed-text" type="text" readonly="readonly" />
             </div>
-            <!-- 旧密码输入框 结束 -->
+            <!-- 金额输入框 结束 -->
 
             <!-- 水平分割线 -->
             <div class="input-form-line horizontal-line"></div>
@@ -61,20 +77,95 @@
 
         <!-- 提现按钮 -->
         <div class="gravity-center">
-            <span class="view text-view button oneline-button" id="save-button">
+            <span class="view text-view button oneline-button" id="save-button" onclick="submit()">
                 提现
             </span>
         </div>
     </div>
 </body>
+<script src="script/jquery.js"></script>
+<script src="script/toolbar.js"></script>
+<script src="script/utils.js"></script>
+<script src="script/data/vuedata.js"></script>
 <script>
+    var inputCurrency = 0;
+    var rate = parseFloat(getCookie("showRate"));
+    var alipayAccount = getCookie("zfbCode");
+    var phone = getCookie("phone");
+    var totalCurrency = 0;
     $(function () {
         toolbar = new Toolbar("#toolbar-container");
         toolbar.title.html("提现");
         toolbar.backButton.click(function () {
             window.location.href = "../TransactionSystem/home.html";
         });
+        var c = getCookie("showCurrency");
+        if (c == "") {
+            c = "0";
+        }
+        totalCurrency = parseInt(c);
+        judgeVal();
     });
+
+
+    function changeCoin(e) {
+        e.value = e.value.replace(/[^\d]/g, '')
+        var coin = $("#ed-coin").val();
+        if (coin == "") {
+            coin = 0;
+        }
+        inputCurrency = parseInt(coin);
+        if (inputCurrency >= totalCurrency) {
+            inputCurrency = totalCurrency;
+            e.value = inputCurrency;
+        }
+        judgeVal();
+
+    }
+
+    function judgeVal() {
+        $("#ed-money").val((inputCurrency * rate).toFixed(2));
+        $("#ed-alipay").val(alipayAccount);
+        $("#ed-phone").val(phone);
+    }
+
+    function submit() {
+        alipayAccount = $("#ed-alipay").val();
+        phone = $("#ed-phone").val();
+
+        if (inputCurrency == 0) {
+            alert("请输入交易币额") ;
+        } else if (alipayAccount == "") {
+            alert("请输入支付宝账号") ;
+        } else if (phone == "") {
+            alert("请输入电话") ;
+        }else{
+            var url = webServer.data.baseURL + webServer.data.withdraw
+            var params = {
+                token: getCookie("token"),
+                currency: inputCurrency,
+                rate: rate,
+                zfbCode: alipayAccount,
+                phone: phone
+            };
+            $.ajax({
+                type: "POST",
+                url: url,
+                crossDomain: true,
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(params),
+                success: function (data) {
+                    if (data.code == 1) {
+                        alert("提现成功");
+                    } else {
+                        alert("提现失败");
+                    }
+                }
+
+            });
+        }
+
+    }
 </script>
 
 </html>

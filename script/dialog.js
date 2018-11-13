@@ -20,6 +20,7 @@ function Dialog(containerSelector) {
         this.mask.fadeIn();
         this.content.slideDown();
         this.showing = true;
+        this.mask.height(document.documentElement.clientHeight);
     };
 
     this.hide = function () {
@@ -30,6 +31,4 @@ function Dialog(containerSelector) {
 
     this.showing = false;
     this.mask.hide();
-    this.mask.height(document.documentElement.clientHeight);
-
 }
