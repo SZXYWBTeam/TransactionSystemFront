@@ -65,14 +65,14 @@
     function showImg(src) {
         var url = webServer.data.baseURL + webServer.data.imgShow
         var parmas = {
-            token: getCookie("token")
+            token: getCookie("token"),
+            serialNumber: getCookie("mineSerial")
         };
         $.ajax({
             type: "POST",
             url: url,
             crossDomain: true,
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(parmas),
+            data: parmas,
             success: function (data) {
                 // 修改成功
                 var imgs = data.split('&&&')
